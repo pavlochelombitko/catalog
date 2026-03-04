@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate Finance – Lecture 4 Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #181b24;
+  --surface2: #1e2230;
+  --accent: #e8a838;
+  --accent2: #c45c3c;
+  --text: #d8dae0;
+  --text-dim: #8a8d99;
+  --text-bright: #f0f1f5;
+  --border: #2a2e3a;
+  --green: #4eca8b;
+  --red: #e85c5c;
+  --blue: #5ca8e8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+
+/* NAV */
+.side-nav {
+  position: fixed;
+  left: 0; top: 0;
+  width: 280px;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 32px 0;
+  overflow-y: auto;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.side-nav .logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--accent);
+  padding: 0 24px 24px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: -0.5px;
+}
+
+.side-nav .logo span { color: var(--text-dim); font-weight: 400; font-size: 13px; display: block; font-family: 'Source Sans 3', sans-serif; margin-top: 4px; }
+
+.nav-section { padding: 16px 0 8px; }
+.nav-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  padding: 0 24px 8px;
+}
+
+.nav-link {
+  display: block;
+  padding: 8px 24px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+.nav-link:hover { color: var(--text-bright); background: var(--surface2); border-left-color: var(--accent); }
+.nav-link.active { color: var(--accent); border-left-color: var(--accent); background: rgba(232,168,56,0.05); }
+
+/* MAIN */
+.main {
+  margin-left: 280px;
+  max-width: 820px;
+  padding: 48px 56px 120px;
+}
+
+/* MOBILE TOGGLE */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px; left: 16px;
+  z-index: 200;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  font-size: 22px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/* HERO */
+.hero {
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-tag {
+  display: inline-block;
+  background: rgba(232,168,56,0.12);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--text-bright);
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+.hero p {
+  font-size: 19px;
+  color: var(--text-dim);
+  font-weight: 300;
+  max-width: 600px;
+}
+
+/* SECTIONS */
+.section {
+  margin-bottom: 56px;
+  scroll-margin-top: 32px;
+}
+.section-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+.section h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 28px 0 12px;
+}
+.section h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 20px 0 8px;
+}
+.section p {
+  margin-bottom: 14px;
+}
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin: 20px 0;
+}
+.card.highlight {
+  border-left: 4px solid var(--accent);
+}
+.card.green { border-left: 4px solid var(--green); }
+.card.red { border-left: 4px solid var(--red); }
+.card.blue { border-left: 4px solid var(--blue); }
+
+.card-title {
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+/* DEFINITION */
+.def {
+  background: rgba(232,168,56,0.06);
+  border: 1px solid rgba(232,168,56,0.15);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin: 20px 0;
+}
+.def-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* TABLE */
+.table-wrap {
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+thead { background: var(--surface2); }
+th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(232,168,56,0.03); }
+
+/* COMPARISON */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+/* PROS CONS */
+.pros-cons { margin: 16px 0; }
+.pros-cons .item {
+  padding: 6px 0;
+  padding-left: 22px;
+  position: relative;
+  font-size: 15px;
+}
+.pros-cons .item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 12px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.pros-cons.good .item::before { background: var(--green); }
+.pros-cons.bad .item::before { background: var(--red); }
+
+/* FLOW DIAGRAM */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.flow-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+.flow-arrow { color: var(--accent); font-size: 20px; }
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 48px 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .side-nav { transform: translateX(-100%); }
+  .side-nav.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.5); }
+  .menu-toggle { display: flex; }
+  .main { margin-left: 0; padding: 80px 24px 100px; }
+  .hero h1 { font-size: 32px; }
+  .section h2 { font-size: 26px; }
+  .compare-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.side-nav').classList.toggle('open')">☰</button>
+
+<nav class="side-nav">
+  <div class="logo">Corporate Finance<span>Lecture 4 – Study Notes</span></div>
+  <div class="nav-section">
+    <div class="nav-section-title">Foundations</div>
+    <a class="nav-link" href="#finance-intro">What is Finance?</a>
+    <a class="nav-link" href="#business-forms">Forms of Business Ownership</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">By Country</div>
+    <a class="nav-link" href="#uk">United Kingdom</a>
+    <a class="nav-link" href="#usa">United States</a>
+    <a class="nav-link" href="#slovakia">Slovakia</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Corporate Finance</div>
+    <a class="nav-link" href="#cf-definition">Definition & Goal</a>
+    <a class="nav-link" href="#cf-components">Key Components</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Finance Topics</div>
+    <a class="nav-link" href="#sources">Sources of Finance</a>
+    <a class="nav-link" href="#debt-equity">Debt vs Equity</a>
+    <a class="nav-link" href="#investments">Corporate Investments</a>
+    <a class="nav-link" href="#npv">NPV Decision Rule</a>
+    <a class="nav-link" href="#working-capital">Working Capital</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">Lecture 4</div>
+    <h1>Corporate Finance</h1>
+    <p>A complete study guide covering business ownership forms, corporate finance basics, sources of finance, investments, and working capital management.</p>
+  </div>
+
+  <!-- 1. FINANCE INTRO -->
+  <div class="section" id="finance-intro">
+    <div class="section-number">Part 01</div>
+    <h2>What is Finance?</h2>
+    <div class="def">
+      <div class="def-label">Definition</div>
+      <p>Finance is about managing, creating, and studying money, banking, credit, investments, assets, and liabilities that form financial systems. It also covers the study of financial instruments.</p>
+    </div>
+    <p>Finance is divided into three main categories: <strong>public finance</strong>, <strong>corporate finance</strong>, and <strong>personal finance</strong>. There's also social finance and behavioral finance, which looks at the human side of financial decisions.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 2. BUSINESS FORMS -->
+  <div class="section" id="business-forms">
+    <div class="section-number">Part 02</div>
+    <h2>Who Can Run a Business?</h2>
+    <p>Different countries recognize different forms of business ownership. Generally, they fall into two groups:</p>
+    <div class="compare-grid">
+      <div class="card highlight">
+        <div class="card-title">Natural Persons</div>
+        <p>Individuals who run business on their own (e.g., sole proprietors, freelancers).</p>
+      </div>
+      <div class="card highlight">
+        <div class="card-title">Business Entities</div>
+        <p>Organizations formed under law to do business — corporations, partnerships, LLCs, cooperatives, and more.</p>
+      </div>
+    </div>
+    <p>A <strong>business entity</strong> is an organization created in accordance with the law to sell products or services. Types include corporations, cooperatives, partnerships, sole traders, and limited liability companies.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 3. UK -->
+  <div class="section" id="uk">
+    <div class="section-number">Part 03</div>
+    <h2>Business Ownership in the UK</h2>
+    <p>In the UK, there are three main forms:</p>
+
+    <h3>1. Sole Proprietorship</h3>
+    <p>A business owned and managed by one person who gets all the profits and bears all the losses.</p>
+    <div class="compare-grid">
+      <div class="card green">
+        <div class="card-title">Benefits</div>
+        <div class="pros-cons good">
+          <div class="item">Easy to start and close</div>
+          <div class="item">Full control over profits and operations</div>
+          <div class="item">Pride of ownership</div>
+          <div class="item">Lower taxes (no corporate income tax)</div>
+        </div>
+      </div>
+      <div class="card red">
+        <div class="card-title">Costs</div>
+        <div class="pros-cons bad">
+          <div class="item">Unlimited liability</div>
+          <div class="item">Hard to raise capital</div>
+          <div class="item">Responsible for all losses</div>
+          <div class="item">Limited management knowledge</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>2. Partnership</h3>
+    <p>A business owned and managed by two or more people who share profits and bear all losses together.</p>
+    <div class="compare-grid">
+      <div class="card green">
+        <div class="card-title">Benefits</div>
+        <div class="pros-cons good">
+          <div class="item">Easier to raise financial capital</div>
+          <div class="item">Partners combine managerial skills</div>
+          <div class="item">Personal satisfaction</div>
+          <div class="item">Lower taxes (no corporate income tax)</div>
+        </div>
+      </div>
+      <div class="card red">
+        <div class="card-title">Costs</div>
+        <div class="pros-cons bad">
+          <div class="item">Unlimited liability</div>
+          <div class="item">Shared profits</div>
+          <div class="item">Possible conflicts between partners</div>
+          <div class="item">Instability if a partner dies or leaves</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>3. Corporation</h3>
+    <p>A business owned by stockholders that has rights and responsibilities as if it were a person.</p>
+    <div class="compare-grid">
+      <div class="card green">
+        <div class="card-title">Benefits</div>
+        <div class="pros-cons good">
+          <div class="item">Limited liability</div>
+          <div class="item">Greater access to financial capital</div>
+          <div class="item">Unlimited life (continues regardless of owners)</div>
+          <div class="item">Specialized management</div>
+        </div>
+      </div>
+      <div class="card red">
+        <div class="card-title">Costs</div>
+        <div class="pros-cons bad">
+          <div class="item">Higher taxation (pays corporate income taxes)</div>
+          <div class="item">Difficult to start (each state has its own rules)</div>
+          <div class="item">More bureaucracy</div>
+          <div class="item">More government control</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>What Makes a Company Special?</h3>
+    <p>A company is an "artificial person" — it's invisible, intangible, created by law, with its own legal personality, perpetual succession, and a common seal. It's not affected by the death or insolvency of any individual member.</p>
+    <div class="card blue">
+      <div class="card-title">Key Features of a Company</div>
+      <p><strong>Separate Legal Entity</strong> — A company is legally separate from its members. It can own property, enter contracts, and sue in its own name.</p>
+      <p><strong>Economic Autonomy</strong> — The company decides its own economic activity (what to produce, where to sell, etc.). The state only sets general rules like tax rates and business conditions.</p>
+      <p><strong>Legal Personality</strong> — Companies can enter contracts in their own name and are responsible for their obligations. They gain legal personality by registering in a business register.</p>
+      <p><strong>Artificial Person Created by Law</strong> — Unlike natural persons, a company comes into existence through law.</p>
+      <p><strong>Continuous Existence</strong> — A company keeps going even when ownership changes. (Unlike a sole proprietorship or partnership, where ownership change means dissolution.)</p>
+      <p><strong>Common Seal</strong> — Since a company is artificial, it acts through natural persons. Its acts are authorized by its "common seal" — the official signature of the company.</p>
+    </div>
+    <p>The terms <strong>business, company, enterprise, and firm</strong> are somewhat interchangeable, though one might work better than another depending on context.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 4. USA -->
+  <div class="section" id="usa">
+    <div class="section-number">Part 04</div>
+    <h2>Business Ownership in the USA</h2>
+    <p>There are four main types in the United States:</p>
+
+    <h3>1. Sole Proprietorship</h3>
+    <p>The simplest form. One person owns and controls the business and is responsible for all liability, profit, and loss.</p>
+
+    <h3>2. Partnership</h3>
+    <p>An association of two or more persons carrying on a business for profit as co-owners. A partnership can be simple or complex.</p>
+    <div class="card">
+      <div class="card-title">Three Kinds of Partnerships</div>
+      <p><strong>General Partnership</strong> — The most basic type. Equal ownership, shared management and liability.</p>
+      <p><strong>Limited Partnership</strong> — Has general partners (who manage and are fully liable) and limited partners (who invest capital but aren't liable beyond their contribution).</p>
+      <p><strong>Joint Venture</strong> — A time-based partnership for a specific project. Once the project ends, the partnership dissolves.</p>
+    </div>
+
+    <h3>3. Limited Liability Company (LLC)</h3>
+    <p>A hybrid between a corporation and a partnership. It combines the ability to limit personal liability (like a corporation) with the ability to pass profits and losses to individuals (like a partnership).</p>
+
+    <h3>4. Business Corporation</h3>
+    <p>A legal entity established under state law. Corporations can be taxed differently depending on their shareholders — either as an <strong>S corporation</strong> (taxed like a partnership) or a <strong>C corporation</strong> (taxed as its own entity).</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 5. SLOVAKIA -->
+  <div class="section" id="slovakia">
+    <div class="section-number">Part 05</div>
+    <h2>Business Ownership in Slovakia</h2>
+    <p>Slovakia has two main forms: <strong>natural persons</strong> and <strong>business entities</strong>. The most common way for a natural person to run a business is as a <strong>sole proprietor</strong> (živnostník), regulated by Act no. 455/1991 on Trade Licensing.</p>
+    <p>The basic law governing business companies is the <strong>Commercial Code (CC)</strong>, Act no. 513/1991.</p>
+
+    <h3>Types of Companies in Slovakia</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Min. Partners</th>
+            <th>Liability</th>
+            <th>Min. Capital</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>General Commercial Company</strong> (v.o.s.)</td>
+            <td>Personal</td>
+            <td>Min. 2</td>
+            <td>Jointly & severally with entire property</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><strong>Limited Partnership</strong> (k.s.)</td>
+            <td>Mixed</td>
+            <td>Min. 2 (1 general + 1 limited)</td>
+            <td>Limited partners: up to unpaid contribution; General partners: entire property</td>
+            <td>€250</td>
+          </tr>
+          <tr>
+            <td><strong>Limited Liability Company</strong> (s.r.o.)</td>
+            <td>Capital</td>
+            <td>Min. 1, max. 50</td>
+            <td>Up to unpaid investment contribution</td>
+            <td>€5,000</td>
+          </tr>
+          <tr>
+            <td><strong>Joint Stock Company</strong> (a.s.)</td>
+            <td>Capital</td>
+            <td>Min. 1 (legal entity) or 2+</td>
+            <td>Shareholders not liable for company obligations</td>
+            <td>€25,000</td>
+          </tr>
+          <tr>
+            <td><strong>Simple Company on Shares</strong> (j.s.a.)</td>
+            <td>Capital</td>
+            <td>Min. 1</td>
+            <td>Shareholders not liable for company obligations</td>
+            <td>€1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Historical Note</div>
+      <p>In Slovakia, enterprises could only be established after 1989. Before that (1949–1989), the only legal form available in Czechoslovakia was the joint stock company, and even that was limited. Today, sole proprietorships and business companies are the most common ways to do business.</p>
+    </div>
+
+    <div class="def">
+      <div class="def-label">Enterprise — EU Definition</div>
+      <p>"An enterprise is any entity engaged in an economic activity, irrespective of its legal form." — Commission Recommendation 2003/361/EC</p>
+    </div>
+    <div class="def">
+      <div class="def-label">Enterprise — Slovak Commercial Code</div>
+      <p>The term "enterprise" means the whole of tangible, intangible, and personal assets used in business. It includes assets, rights, and other valuables belonging to the entrepreneur that are used (or supposed to be used) for the operation of the enterprise.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 6. CF DEFINITION -->
+  <div class="section" id="cf-definition">
+    <div class="section-number">Part 06</div>
+    <h2>Definition & Goal of Corporate Finance</h2>
+
+    <div class="card highlight">
+      <div class="card-title">Why Finance Matters</div>
+      <p>Finance is the life blood of business. No business can run without it. Finance is needed to start a business, keep it alive, and help it grow. Every business decision has financial implications — so broadly speaking, everything a business does falls under corporate finance.</p>
+    </div>
+
+    <h3>How the Term Varies</h3>
+    <p>In the <strong>US</strong>, "corporate finance" is used broadly — it covers all activities, decisions, and techniques related to a company's finances and capital.</p>
+    <p>In the <strong>UK</strong>, "corporate finance" is more narrowly associated with investment banking — specifically transactions where capital is raised to create, develop, or acquire businesses.</p>
+    <p>In <strong>Slovakia</strong>, the definition is similar to the US one.</p>
+
+    <div class="def">
+      <div class="def-label">Definition</div>
+      <p>Corporate Finance is the study of financial decision-making processes within a business. It deals with how value is generated, used, and distributed in business activities.</p>
+    </div>
+
+    <div class="card" style="border-left: 4px solid var(--accent2);">
+      <div class="card-title" style="color: var(--accent2); font-size: 20px;">The Primary Goal</div>
+      <p style="font-size: 18px;">Maximize or increase <strong>shareholder value</strong> while respecting the limitations resulting from the different interests of other business participants.</p>
+    </div>
+
+    <p>Corporate Finance as a discipline was created in the early 20th century by separating from Business Economy. Both theory and practice continue to evolve rapidly.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 7. CF COMPONENTS -->
+  <div class="section" id="cf-components">
+    <div class="section-number">Part 07</div>
+    <h2>Key Components of CF</h2>
+    <div class="flow">
+      <div class="flow-item">Sources of Finance</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item">Investment Decisions</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item">Financial Planning</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item">Financial Analysis</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item">Financial Control</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item">Organizing Processes</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item">Int'l Financial Mgmt</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 8. SOURCES OF FINANCE -->
+  <div class="section" id="sources">
+    <div class="section-number">Part 08</div>
+    <h2>Sources of Finance</h2>
+    <p>Businesses need money — both short-term and long-term — to expand, operate, or survive. Finance can come from many different sources and can be classified in several ways:</p>
+
+    <div class="compare-grid">
+      <div class="card blue">
+        <div class="card-title">By Origin</div>
+        <p><strong>External</strong> — money from outside (investors, banks, grants)</p>
+        <p><strong>Internal</strong> — money from within the business (retained profits, reserves)</p>
+      </div>
+      <div class="card blue">
+        <div class="card-title">By Ownership</div>
+        <p><strong>Equity</strong> — owner's own money</p>
+        <p><strong>Debt</strong> — borrowed money</p>
+      </div>
+    </div>
+    <div class="card blue">
+      <div class="card-title">By Time</div>
+      <p><strong>Long-term</strong> — financial loans, supplier/export loans, bonds, leasing, franchising, forfaiting</p>
+      <p><strong>Short-term</strong> — trade credit, accruals, bank loans, advance payments, factoring, commercial papers</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 9. DEBT VS EQUITY -->
+  <div class="section" id="debt-equity">
+    <div class="section-number">Part 09</div>
+    <h2>Debt vs Equity</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Debt</th><th>Equity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Type of claim</strong></td><td>Contractual claim</td><td>Residual claim</td></tr>
+          <tr><td><strong>Tax benefit</strong></td><td>Tax-deductible payments</td><td>No tax advantage</td></tr>
+          <tr><td><strong>Life</strong></td><td>Fixed life (maturity date)</td><td>Infinite life</td></tr>
+          <tr><td><strong>Bankruptcy priority</strong></td><td>Priority claim on cash flows</td><td>No priority</td></tr>
+          <tr><td><strong>Management control</strong></td><td>No control</td><td>Provides control to owner</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card highlight">
+      <p>Even the healthiest corporate balance sheets will include some level of debt. A mix of debt and equity is normal and often beneficial.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 10. INVESTMENTS -->
+  <div class="section" id="investments">
+    <div class="section-number">Part 10</div>
+    <h2>Corporate Investments</h2>
+    <p>Investment means using money to generate profit or returns. Investment opportunities are commitments of monetary resources at different times, expecting economic returns in the future. Typically, you spend a large amount now and receive smaller benefits over time.</p>
+
+    <div class="compare-grid">
+      <div class="card green">
+        <div class="card-title">Real Investments</div>
+        <p>Money used directly to buy productive (real) assets — like plants, machinery, equipment, and buildings.</p>
+      </div>
+      <div class="card blue">
+        <div class="card-title">Financial Investments</div>
+        <p>Money invested in securities or financial instruments — like stocks, bonds, and funds.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 11. NPV -->
+  <div class="section" id="npv">
+    <div class="section-number">Part 11</div>
+    <h2>NPV — Net Present Value</h2>
+    <p>The financial manager's goal is to maximize the value of the business. To evaluate investments, you need to figure out the cash flows and assess their uncertainty.</p>
+
+    <div class="def">
+      <div class="def-label">Definition</div>
+      <p><strong>NPV</strong> = Present Value of Cash Inflows − Present Value of Cash Outflows. It's the most common tool used to evaluate long-term investments.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>If NPV is...</th><th>This means...</th><th>Decision</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color: var(--green);">NPV &gt; 0</strong></td>
+            <td>The investment is expected to increase shareholder wealth</td>
+            <td style="color: var(--green); font-weight: 700;">Accept the project ✓</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--red);">NPV &lt; 0</strong></td>
+            <td>The investment is expected to decrease shareholder wealth</td>
+            <td style="color: var(--red); font-weight: 700;">Reject the project ✗</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--text-dim);">NPV = 0</strong></td>
+            <td>The investment won't change shareholder wealth</td>
+            <td style="color: var(--text-dim);">Indifferent — could go either way</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 12. WORKING CAPITAL -->
+  <div class="section" id="working-capital">
+    <div class="section-number">Part 12</div>
+    <h2>Working Capital Management</h2>
+    <p><strong>Working Capital (WC)</strong> is the amount of current assets expressed in monetary units — the funds invested in day-to-day business operations.</p>
+
+    <h3>The Operating Cycle</h3>
+    <p>Current assets change form quickly during the production process. This is called the circulation of current assets:</p>
+    <div class="flow">
+      <div class="flow-item" style="background: #2a5a3a;">Cash</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" style="background: #5a4a2a;">Raw Materials</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" style="background: #2a4a5a;">Work-in-Progress</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" style="background: #3a3a5a;">Finished Goods</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" style="background: #5a2a3a;">Receivables</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-item" style="background: #2a5a3a;">Cash</div>
+    </div>
+
+    <h3>What Does WC Management Involve?</h3>
+    <p>It means making decisions about investments in inventory, accounts receivable, and cash — plus deciding how to finance these assets.</p>
+
+    <div class="card highlight">
+      <div class="card-title">Two Fundamental Questions</div>
+      <p><strong>1.</strong> What is the right amount of current assets for the business, and what should their structure be?</p>
+      <p><strong>2.</strong> What are the best sources to finance these current assets?</p>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// Active nav link on scroll
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const id = entry.target.id;
+      const link = document.querySelector(`.nav-link[href="#${id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// Close mobile nav on link click
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.side-nav').classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
