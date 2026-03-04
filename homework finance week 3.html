@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HT — Financial Markets Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f11;
+    --bg2: #13161a;
+    --surface: #191d23;
+    --border: #252a32;
+    --gold: #d4a843;
+    --gold-dim: rgba(212, 168, 67, 0.1);
+    --gold-glow: rgba(212, 168, 67, 0.06);
+    --red: #e05252;
+    --green: #4ecb71;
+    --text: #d8dce3;
+    --text-dim: #6b7280;
+    --white: #f0f2f5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Noise overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  ::selection { background: var(--gold); color: var(--bg); }
+
+  /* Top ticker bar */
+  .ticker-bar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    animation: tickerScroll 30s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+  }
+
+  .ticker-item .symbol { color: var(--white); font-weight: 500; }
+  .ticker-item .up { color: var(--green); }
+  .ticker-item .down { color: var(--red); }
+
+  /* Nav */
+  nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* Hero */
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 32px 60px;
+    position: relative;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -1px;
+    max-width: 800px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-dim);
+    margin-top: 20px;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-meta span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Sections */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 32px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 900;
+    color: var(--gold-dim);
+    line-height: 1;
+    position: absolute;
+    right: 0;
+    top: -10px;
+    user-select: none;
+    display: none;
+  }
+
+  .section-header {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+  }
+
+  .section-header h2 em { color: var(--gold); font-style: italic; }
+
+  /* Content blocks */
+  .content-block {
+    max-width: 720px;
+    margin-bottom: 40px;
+  }
+
+  .content-block p {
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+
+  .content-block strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* DJIA Card */
+  .index-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px;
+    margin: 32px 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .index-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .index-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .index-full-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--white);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .index-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .index-value-block {
+    text-align: right;
+    min-width: 180px;
+  }
+
+  .index-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  .index-change {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
+  .index-change.down { color: var(--red); }
+  .index-change.up { color: var(--green); }
+
+  .index-period {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .index-chips {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--gold-dim);
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  /* Bullet list */
+  .highlight-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .highlight-list li {
+    font-size: 16px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    color: var(--text);
+  }
+
+  .highlight-list li strong {
+    color: var(--white);
+    display: inline;
+  }
+
+  /* Commodity cards */
+  .commodity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .commodity-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .commodity-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+
+  .commodity-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .commodity-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .commodity-card .abbr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .commodity-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* Exchange table */
+  .exchange-table-wrap {
+    overflow-x: auto;
+    margin-top: 32px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+  }
+
+  thead {
+    background: var(--bg2);
+  }
+
+  th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 18px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: var(--gold-glow); }
+
+  .exchange-name {
+    font-weight: 600;
+    color: var(--white);
+    display: block;
+  }
+
+  .exchange-loc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .mcap {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  .bar-cell {
+    position: relative;
+  }
+
+  .bar-fill {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.8s ease;
+  }
+
+  .focus-tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--gold-dim);
+    color: var(--gold);
+    margin: 2px 2px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+  }
+
+  /* Key insight box */
+  .insight-box {
+    background: linear-gradient(135deg, var(--gold-dim), transparent);
+    border: 1px solid rgba(212, 168, 67, 0.15);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-top: 32px;
+    position: relative;
+  }
+
+  .insight-box::before {
+    content: '💡';
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    font-size: 22px;
+    background: var(--bg);
+    padding: 0 8px;
+  }
+
+  .insight-box p {
+    font-size: 16px;
+    color: var(--text);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.7;
+  }
+
+  /* Pie chart visual */
+  .dominance-visual {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .pie-chart {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--gold) 0% 42.4%,
+      #3a5f8a 42.4% 51.4%,
+      #4a6d5e 51.4% 60.7%,
+      #6b5a7d 60.7% 69.3%,
+      #5a6d7d 69.3% 77.6%,
+      var(--border) 77.6% 100%
+    );
+    position: relative;
+    flex-shrink: 0;
+    animation: pieIn 1s ease both;
+  }
+
+  @keyframes pieIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .pie-chart::after {
+    content: '42.4%';
+    position: absolute;
+    inset: 20px;
+    background: var(--bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .pie-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  footer .left {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  footer .right {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero { padding: 48px 20px 40px; }
+    .section { padding: 48px 20px; }
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .index-card { grid-template-columns: 1fr; }
+    .index-value-block { text-align: left; }
+    .index-chips { justify-content: flex-start; }
+    .hero-meta { flex-direction: column; gap: 8px; }
+    footer { padding: 32px 20px; }
+    .dominance-visual { justify-content: center; }
+  }
+
+  /* Scroll animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- Ticker Bar -->
+<div class="ticker-bar">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-brand">Financial Markets</div>
+  <ul class="nav-links">
+    <li><a href="#indices">Indices</a></li>
+    <li><a href="#commodities">Commodities</a></li>
+    <li><a href="#exchanges">Exchanges</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-label">Homework Assignment — Questions 4, 5 & 6</div>
+  <h1>Understanding Global <em>Financial Markets</em></h1>
+  <p class="hero-sub">An exploration of stock indices, commodity markets, and the world's leading stock exchanges.</p>
+  <div class="hero-meta">
+    <span>Course: Business English</span>
+    <span>University of Economics, Bratislava</span>
+  </div>
+</div>
+
+<!-- Section 4: Stock Indices -->
+<section class="section" id="indices">
+  <div class="section-header">
+    <div class="section-tag">Question 04</div>
+    <h2>The Importance of <em>Stock Indices</em></h2>
+  </div>
+
+  <div class="content-block reveal">
+    <p>Stock indices track the performance of a selected group of stocks, serving as barometers for overall market health, investor sentiment, and broader economic conditions. They allow investors to compare portfolio returns against a standardized benchmark and form the foundation for index funds and ETFs.</p>
+  </div>
+
+  <ul class="highlight-list reveal">
+    <li><strong>Benchmarking:</strong> Investors and fund managers measure their performance against indices to evaluate whether they are outperforming or underperforming the market.</li>
+    <li><strong>Market Health Indicator:</strong> A rising index generally signals economic optimism, while a falling one can indicate uncertainty or recession fears.</li>
+    <li><strong>Investment Products:</strong> Many index funds and ETFs directly replicate indices, giving retail investors broad market exposure at low cost.</li>
+    <li><strong>Economic Forecasting:</strong> Indices are considered leading indicators — they often react before official economic data confirms trends.</li>
+  </ul>
+
+  <!-- DJIA Card -->
+  <div class="index-card reveal">
+    <div>
+      <div class="index-name">DJIA / .DJI</div>
+      <div class="index-full-name">Dow Jones Industrial Average</div>
+      <p class="index-desc">
+        The Dow tracks <strong>30 major U.S. blue-chip companies</strong>, including Apple, Microsoft, Goldman Sachs, and Boeing. It is a price-weighted index, meaning stocks with higher share prices have greater influence on its movement. Created in 1896 by Charles Dow, it remains one of the most widely quoted market indicators.
+      </p>
+    </div>
+    <div class="index-value-block">
+      <div class="index-value">49,499</div>
+      <div class="index-change down">▼ −805 pts (−1.6%)</div>
+      <div class="index-period">Today's session</div>
+      <div class="index-chips">
+        <span class="chip">30 Stocks</span>
+        <span class="chip">Price-Weighted</span>
+        <span class="chip">Est. 1896</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box reveal">
+    <p>The previous close was 49,499.20, but today the index dropped approximately 805 points as markets reconsidered speculative positions in AI infrastructure companies. Over the past year, the Dow has gained roughly 13%. A level near 49,000 reflects historically strong valuations, while today's pullback shows how quickly sentiment can shift on a single catalyst.</p>
+  </div>
+</section>
+
+<!-- Section 5: Commodity Markets -->
+<section class="section" id="commodities">
+  <div class="section-header">
+    <div class="section-tag">Question 05</div>
+    <h2>What Are <em>Commodity Markets?</em></h2>
+  </div>
+
+  <div class="content-block reveal">
+    <p>Commodity markets are exchanges where standardized raw materials and primary products are traded — either on the spot (immediate delivery) or through futures contracts (delivery at a future date and agreed price). These markets serve two critical functions: <strong>price discovery</strong> (establishing fair market value through supply and demand) and <strong>hedging</strong> (allowing producers and consumers to manage risk against price volatility).</p>
+    <p>Participants include farmers, miners, energy companies, and financial speculators. Commodities are typically categorized into hard commodities (metals, energy) and soft commodities (agricultural products).</p>
+  </div>
+
+  <div class="commodity-grid reveal">
+    <div class="commodity-card">
+      <span class="commodity-icon">🌾</span>
+      <h4>Chicago Mercantile Exchange</h4>
+      <span class="abbr">CME / CBOT</span>
+      <p>The world's largest derivatives exchange. Hosts trading in agricultural products (corn, wheat, soybeans), livestock, interest rates, and energy futures. Founded in 1898 as the Chicago Butter and Egg Board.</p>
+    </div>
+    <div class="commodity-card">
+      <span class="commodity-icon">⚙️</span>
+      <h4>London Metal Exchange</h4>
+      <span class="abbr">LME</span>
+      <p>The world's largest market for industrial metals including copper, aluminium, zinc, nickel, and lead. Known for its unique open-outcry ring trading system. Established in 1877.</p>
+    </div>
+    <div class="commodity-card">
+      <span class="commodity-icon">🛢️</span>
+      <h4>New York Mercantile Exchange</h4>
+      <span class="abbr">NYMEX</span>
+      <p>The world's primary venue for energy commodity trading — crude oil (WTI benchmark), natural gas, heating oil, and gasoline. Also handles precious metals (gold, silver, platinum). Now part of CME Group.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: Stock Exchanges -->
+<section class="section" id="exchanges">
+  <div class="section-header">
+    <div class="section-tag">Question 06</div>
+    <h2>The World's Major <em>Stock Exchanges</em></h2>
+  </div>
+
+  <div class="content-block reveal">
+    <p>Stock exchanges are regulated marketplaces where securities — primarily shares of publicly listed companies — are bought and sold. Each major exchange has a distinct character shaped by its history, listed companies, and regional economic strengths.</p>
+  </div>
+
+  <div class="exchange-table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Exchange</th>
+          <th>Market Cap</th>
+          <th>Focus &amp; Character</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="exchange-name">NYSE</span>
+            <span class="exchange-loc">New York, USA</span>
+          </td>
+          <td>
+            <span class="mcap">~$31.7T</span>
+            <div class="bar-cell"><div class="bar-fill" style="width: 100%"></div></div>
+          </td>
+          <td>
+            <span class="focus-tag">Diversified</span>
+            <span class="focus-tag">Blue-Chip</span>
+            <span class="focus-tag">Global Leader</span>
+            <br><small style="color: var(--text-dim);">Largest exchange globally. Home to major industrials, financials, and energy companies.</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="exchange-name">Nasdaq</span>
+            <span class="exchange-loc">New York, USA</span>
+          </td>
+          <td>
+            <span class="mcap">~$29.9T</span>
+            <div class="bar-cell"><div class="bar-fill" style="width: 94%"></div></div>
+          </td>
+          <td>
+            <span class="focus-tag">Technology</span>
+            <span class="focus-tag">Growth Stocks</span>
+            <span class="focus-tag">Innovation</span>
+            <br><small style="color: var(--text-dim);">Technology-heavy. Home to Apple, Microsoft, Amazon, Nvidia, and Meta.</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="exchange-name">Euronext</span>
+            <span class="exchange-loc">Pan-European</span>
+          </td>
+          <td>
+            <span class="mcap">~$7.2T</span>
+            <div class="bar-cell"><div class="bar-fill" style="width: 23%"></div></div>
+          </td>
+          <td>
+            <span class="focus-tag">Diversified European</span>
+            <span class="focus-tag">Multi-Country</span>
+            <br><small style="color: var(--text-dim);">Spans Amsterdam, Paris, Brussels, Lisbon, Dublin, Oslo, and Milan.</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="exchange-name">Shanghai SSE</span>
+            <span class="exchange-loc">Shanghai, China</span>
+          </td>
+          <td>
+            <span class="mcap">~$7.0T</span>
+            <div class="bar-cell"><div class="bar-fill" style="width: 22%"></div></div>
+          </td>
+          <td>
+            <span class="focus-tag">State Enterprises</span>
+            <span class="focus-tag">Financials</span>
+            <span class="focus-tag">Domestic</span>
+            <br><small style="color: var(--text-dim);">Dominated by Chinese state-owned enterprises and major banks.</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="exchange-name">Tokyo TSE</span>
+            <span class="exchange-loc">Tokyo, Japan</span>
+          </td>
+          <td>
+            <span class="mcap">~$6.5T</span>
+            <div class="bar-cell"><div class="bar-fill" style="width: 20%"></div></div>
+          </td>
+          <td>
+            <span class="focus-tag">Industrial</span>
+            <span class="focus-tag">Automotive</span>
+            <span class="focus-tag">Electronics</span>
+            <br><small style="color: var(--text-dim);">Home to Toyota, Sony, and Honda. Japan's industrial and tech giants.</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="exchange-name">London LSE</span>
+            <span class="exchange-loc">London, UK</span>
+          </td>
+          <td>
+            <span class="mcap">~$3.0T</span>
+            <div class="bar-cell"><div class="bar-fill" style="width: 9%"></div></div>
+          </td>
+          <td>
+            <span class="focus-tag">International</span>
+            <span class="focus-tag">Mining</span>
+            <span class="focus-tag">Finance</span>
+            <br><small style="color: var(--text-dim);">Most international exchange — 1,900+ companies from 70+ countries.</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Dominance visual -->
+  <div class="dominance-visual reveal">
+    <div class="pie-chart"></div>
+    <div class="pie-legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background: var(--gold)"></div>
+        NYSE + Nasdaq (USA) — 42.4% of global market cap
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #3a5f8a"></div>
+        Euronext (Europe) — 9.0%
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #4a6d5e"></div>
+        Shanghai SSE (China) — 9.3%
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #6b5a7d"></div>
+        Tokyo TSE (Japan) — 8.6%
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #5a6d7d"></div>
+        London LSE (UK) — 8.3%
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: var(--border)"></div>
+        Others — 22.4%
+      </div>
+    </div>
+  </div>
+
+  <div class="insight-box reveal">
+    <p>The NYSE and Nasdaq together command 42.4% of global market capitalization, underscoring U.S. dominance in world financial markets. However, emerging exchanges in Asia and pan-European consolidations like Euronext are steadily growing their share, signaling a gradual shift in the global center of gravity.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="left">Homework Assignment — Financial Markets</div>
+  <div class="right">EUBA 2025</div>
+</footer>
+
+<script>
+  // Ticker data
+  const tickerData = [
+    { sym: 'DJIA', val: '49,499.20', chg: '−1.60%', dir: 'down' },
+    { sym: 'S&P 500', val: '6,012.28', chg: '+0.22%', dir: 'up' },
+    { sym: 'NASDAQ', val: '19,627.44', chg: '−0.58%', dir: 'down' },
+    { sym: 'FTSE 100', val: '8,321.65', chg: '+0.31%', dir: 'up' },
+    { sym: 'NIKKEI', val: '39,187.50', chg: '−0.40%', dir: 'down' },
+    { sym: 'WTI OIL', val: '$71.24', chg: '+1.12%', dir: 'up' },
+    { sym: 'GOLD', val: '$2,918.40', chg: '+0.45%', dir: 'up' },
+    { sym: 'COPPER', val: '$4.12/lb', chg: '−0.33%', dir: 'down' },
+    { sym: 'EUR/USD', val: '1.0472', chg: '−0.15%', dir: 'down' },
+    { sym: 'BTC', val: '$96,420', chg: '+2.4%', dir: 'up' },
+  ];
+
+  function buildTicker() {
+    const el = document.getElementById('ticker');
+    const items = tickerData.map(t =>
+      `<div class="ticker-item">
+        <span class="symbol">${t.sym}</span>
+        ${t.val}
+        <span class="${t.dir}">${t.chg}</span>
+      </div>`
+    ).join('');
+    el.innerHTML = items + items; // duplicate for seamless scroll
+  }
+  buildTicker();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
