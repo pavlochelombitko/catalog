@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 5 — Money, Money Market & Banking</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0f;
+    --card: #141418;
+    --card-hover: #1a1a20;
+    --border: #222230;
+    --accent: #e8c547;
+    --accent-dim: #e8c54730;
+    --text: #e0dfd8;
+    --text-dim: #8a8a95;
+    --red: #d94040;
+    --green: #3fbf7f;
+    --blue: #4a8fe8;
+    --purple: #9b6fe8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    max-width: 700px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    color: var(--text-dim);
+    font-size: 1rem;
+    max-width: 500px;
+    font-weight: 300;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  /* Section blocks */
+  .section {
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1) { animation-delay: 0.1s; }
+  .section:nth-child(2) { animation-delay: 0.15s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.25s; }
+  .section:nth-child(5) { animation-delay: 0.3s; }
+  .section:nth-child(6) { animation-delay: 0.35s; }
+  .section:nth-child(7) { animation-delay: 0.4s; }
+  .section:nth-child(8) { animation-delay: 0.45s; }
+  .section:nth-child(9) { animation-delay: 0.5s; }
+  .section:nth-child(10) { animation-delay: 0.55s; }
+
+  .section-num {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  .section p {
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 14px;
+    font-size: 0.98rem;
+  }
+
+  .section p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .highlight {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+
+  .card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent-dim);
+  }
+
+  .card-icon {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .card p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 0;
+  }
+
+  /* Timeline */
+  .timeline {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 10px 0 10px 20px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 18px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .timeline-item p {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+  }
+
+  /* Formula box */
+  .formula-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .formula {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin: 12px 0;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .formula-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+    margin-top: 14px;
+    text-align: left;
+  }
+
+  .formula-legend span {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .formula-legend span strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Example box */
+  .example {
+    background: #111115;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 14px;
+  }
+
+  .example-label {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .example p {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  /* Key insight */
+  .insight {
+    background: linear-gradient(135deg, #1a1820, #16161e);
+    border: 1px solid var(--accent-dim);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-top: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .insight::before {
+    content: '💡';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 4rem;
+    opacity: 0.08;
+  }
+
+  .insight p {
+    color: var(--text);
+    font-weight: 400;
+    font-size: 0.95rem;
+  }
+
+  /* Comparison row */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .compare-col {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+
+  .compare-col h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .compare-col.m1 h4 { color: var(--blue); }
+  .compare-col.m2 h4 { color: var(--purple); }
+
+  .compare-col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .compare-col li {
+    font-size: 0.87rem;
+    color: var(--text-dim);
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+    font-weight: 300;
+  }
+
+  .compare-col li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 2px;
+    background: var(--accent-dim);
+    margin: 56px auto;
+    border-radius: 1px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    font-weight: 300;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    .compare { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Lecture 5 — Principles of Economics</div>
+  <h1>Money, the <em>Money Market</em>, and the Banking System</h1>
+  <p class="hero-sub">EUBA — Prof. Čaplánová & Dr. Mkiyes — 09.03.2026</p>
+</div>
+
+<div class="container">
+
+  <!-- 1. What is Money -->
+  <div class="section">
+    <div class="section-num">01</div>
+    <h2>What Is Money?</h2>
+    <p>Money is <strong>any asset generally accepted as payment</strong> for goods, services, or debt repayment. It makes modern markets work — without it, we'd be stuck with barter and its high transaction costs.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h3>Medium of Exchange</h3>
+        <p>Widely accepted for payments — eliminates the need for direct barter and cuts transaction costs.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📏</div>
+        <h3>Unit of Account</h3>
+        <p>A common standard to express prices (e.g. €2 for bread). Without it, every good's price must be stated in terms of every other good.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <h3>Store of Value</h3>
+        <p>Lets you transfer purchasing power into the future. But <span class="highlight">inflation</span> erodes this over time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Barter Problem -->
+  <div class="section">
+    <div class="section-num">02</div>
+    <h2>The Barter Problem</h2>
+    <p>Barter means directly swapping goods for goods. The big issue? The <strong>double coincidence of wants</strong> — both parties must have exactly what the other wants, at the same time. This makes trade expensive and inefficient.</p>
+    <div class="insight">
+      <p>Money solves the double coincidence problem. Instead of finding someone who has what you need <em>and</em> wants what you have, you just use money as an intermediary.</p>
+    </div>
+  </div>
+
+  <!-- 3. Evolution of Money -->
+  <div class="section">
+    <div class="section-num">03</div>
+    <h2>Evolution of Money</h2>
+    <p>Money has gone through several stages — always moving toward more efficient and reliable exchange:</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>Barter</h4>
+        <p>Direct goods-for-goods exchange. High friction.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Commodity Money</h4>
+        <p>Items with intrinsic value — cattle, salt, tobacco, shells.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Metal Money</h4>
+        <p>Gold, silver, copper coins. Durable, divisible, standardized by governments.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Paper Money (Fiat)</h4>
+        <p>No intrinsic value — accepted because of government authority and public trust.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Bank Money</h4>
+        <p>Checking deposits, electronic payments, bank transfers. Most money today.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Digital / Crypto</h4>
+        <p>Bitcoin, Ethereum — blockchain-based. Currently more speculative assets than real money.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Monetary Aggregates -->
+  <div class="section">
+    <div class="section-num">04</div>
+    <h2>Monetary Aggregates: M1 & M2</h2>
+    <p>Economists measure how much money is in the economy using aggregates. The key difference is <strong>liquidity</strong> — how easily an asset converts to cash.</p>
+    <div class="compare">
+      <div class="compare-col m1">
+        <h4>M1 — Narrow Money</h4>
+        <ul>
+          <li>Currency (banknotes & coins)</li>
+          <li>Traveler's checks</li>
+          <li>Checking deposits</li>
+          <li>All directly usable for transactions</li>
+        </ul>
+      </div>
+      <div class="compare-col m2">
+        <h4>M2 — Broad Money</h4>
+        <ul>
+          <li>Everything in M1, plus:</li>
+          <li>Savings deposits</li>
+          <li>Time deposits</li>
+          <li>Money market mutual funds</li>
+          <li>Easily converted, not directly spendable</li>
+        </ul>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:16px;">
+      <p><strong>Liquidity</strong> = how quickly you can turn an asset into cash. Cash & checking accounts are highly liquid. Bonds and real estate are not.</p>
+    </div>
+  </div>
+
+  <!-- 5. Demand for Money -->
+  <div class="section">
+    <div class="section-num">05</div>
+    <h2>Demand for Money</h2>
+    <p>The demand for money is <strong>how much money people and firms want to hold</strong>. It depends on the price level, the nominal interest rate, real GDP, and financial innovation.</p>
+    <p>The demand curve is <strong>downward-sloping</strong>: when interest rates rise, the opportunity cost of holding cash goes up, so people hold less money (and buy bonds instead). When rates fall, they hold more.</p>
+  </div>
+
+  <!-- 6. Keynes' Liquidity Preference -->
+  <div class="section">
+    <div class="section-num">06</div>
+    <h2>Keynes' Liquidity Preference Theory</h2>
+    <p>Keynes argued people have a natural preference for holding liquid assets (money). He identified <strong>three motives</strong>:</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🛒</div>
+        <h3>Transaction Motive</h3>
+        <p>Money for everyday purchases — groceries, bills, rent.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Precautionary Motive</h3>
+        <p>Money kept as a buffer for unexpected expenses — car repair, medical bills.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>Speculative Motive</h3>
+        <p>Money held based on expectations about future interest rates and asset prices.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Quantity Theory -->
+  <div class="section">
+    <div class="section-num">07</div>
+    <h2>Quantity Theory of Money</h2>
+    <p>This theory links the money supply to the overall price level through the <strong>equation of exchange</strong>:</p>
+    <div class="formula-box">
+      <div class="formula">M × V = P × Y</div>
+      <div class="formula-legend">
+        <span><strong>M</strong> = Money supply</span>
+        <span><strong>V</strong> = Velocity of money</span>
+        <span><strong>P</strong> = Price level</span>
+        <span><strong>Y</strong> = Real output (GDP)</span>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:16px;">
+      <p>If V and Y are stable, then increasing M will mainly raise P — i.e. <strong>more money = higher prices = inflation</strong>. This is the core idea of monetarism (Milton Friedman).</p>
+    </div>
+  </div>
+
+  <!-- 8. Banking System -->
+  <div class="section">
+    <div class="section-num">08</div>
+    <h2>The Banking System</h2>
+    <p>A <strong>depository institution</strong> (typically a commercial bank) accepts deposits and makes loans. Banks serve the economy by creating liquidity, pooling risk, reducing borrowing costs, and monitoring borrowers.</p>
+  </div>
+
+  <!-- 9. Money Creation -->
+  <div class="section">
+    <div class="section-num">09</div>
+    <h2>Money Creation & the Multiplier</h2>
+    <p>Banks operate on a <strong>fractional reserve system</strong> — they keep only a small fraction of deposits as reserves and lend the rest. Through repeated rounds of lending and depositing, the banking system expands the total money supply.</p>
+    <div class="example">
+      <div class="example-label">Example</div>
+      <p>Deposit = <strong>€1,000</strong> · Reserve ratio = <strong>2%</strong></p>
+      <p>Reserves kept = €20 · Loaned out = €980</p>
+      <p>That €980 gets deposited elsewhere, and the cycle continues...</p>
+    </div>
+    <div class="formula-box" style="margin-top:16px;">
+      <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:8px;">Money Multiplier Formula</p>
+      <div class="formula">1 ÷ Reserve Ratio</div>
+      <p style="color:var(--text-dim);font-size:0.88rem;margin-top:8px;">With a 2% reserve ratio → multiplier = <span class="highlight">50</span></p>
+    </div>
+    <p style="margin-top:14px;">In practice, the actual expansion is smaller because people hold cash outside banks and banks may keep excess reserves.</p>
+  </div>
+
+  <!-- 10. Money Market Equilibrium -->
+  <div class="section">
+    <div class="section-num">10</div>
+    <h2>Money Market Equilibrium</h2>
+    <p>The money market reaches equilibrium when <strong>money supply = money demand</strong>. The supply is controlled by the central bank (e.g. the ECB or the Fed), while demand depends on income, interest rates, and other factors.</p>
+    <p>This equilibrium determines the <strong>nominal interest rate</strong> in the economy.</p>
+    <div class="cards" style="grid-template-columns: 1fr 1fr;">
+      <div class="card">
+        <h3 style="color:var(--red);">Excess Supply of Money</h3>
+        <p>People buy bonds → bond prices rise → interest rate falls → back to equilibrium.</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--green);">Excess Demand for Money</h3>
+        <p>People sell bonds → bond prices fall → interest rate rises → back to equilibrium.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Central Bank -->
+  <div class="section">
+    <div class="section-num">11</div>
+    <h2>The Central Bank</h2>
+    <p>The central bank regulates the banking system and controls the money supply. Major examples include the <strong>Federal Reserve</strong> (US) and the <strong>European Central Bank</strong> (Eurozone). They also serve as <strong>lenders of last resort</strong>, stepping in to provide liquidity during financial crises.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  Principles of Economics — Lecture 5 Study Guide · Based on Parkin, M. (2024). <em>Economics</em> (14th Ed.) Pearson.
+</div>
+
+</body>
+</html>
