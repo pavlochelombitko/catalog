@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Macroeconomics — Seminar Study Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e16;
+    --surface: #131620;
+    --surface2: #1a1e2e;
+    --surface3: #222840;
+    --gold: #d4a847;
+    --gold2: #e8c76a;
+    --text: #ddd8cc;
+    --text2: #9a95868a;
+    --muted: #5a6080;
+    --blue: #6b8cde;
+    --green: #5db88a;
+    --red: #d96060;
+    --purple: #9b72cf;
+    --border: #252a40;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sidebar-logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .sidebar-logo p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: 'Crimson Pro', serif;
+  }
+  .nav-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 18px 20px 8px;
+  }
+  .nav-item {
+    padding: 11px 20px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .nav-item:hover { background: var(--surface2); }
+  .nav-item.active {
+    border-left-color: var(--gold);
+    background: var(--surface2);
+  }
+  .nav-item.active .nav-week { color: var(--gold); }
+  .nav-week {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    min-width: 36px;
+    padding-top: 2px;
+  }
+  .nav-title {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  /* ── WEEK PANEL ── */
+  .week-panel { display: none; }
+  .week-panel.active { display: block; }
+
+  .week-hero {
+    padding: 44px 52px 32px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .week-hero::before {
+    content: attr(data-week);
+    position: absolute;
+    right: 40px;
+    top: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: var(--border);
+    font-weight: 700;
+    line-height: 1;
+    user-select: none;
+  }
+  .week-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .week-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text);
+    max-width: 560px;
+    line-height: 1.2;
+  }
+  .week-hero p {
+    color: var(--muted);
+    margin-top: 10px;
+    font-size: 15px;
+    max-width: 540px;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0 52px;
+    background: var(--surface);
+    gap: 0;
+  }
+  .tab-btn {
+    padding: 14px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .tab-content { display: none; padding: 40px 52px; }
+  .tab-content.active { display: block; }
+
+  /* ── CONTENT ELEMENTS ── */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .concept-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    transition: border-color 0.2s;
+  }
+  .concept-card:hover { border-color: var(--muted); }
+  .concept-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--gold2);
+    margin-bottom: 8px;
+  }
+  .concept-card p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .formula-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--gold2);
+    line-height: 1.8;
+  }
+  .formula-box .label {
+    font-family: 'Crimson Pro', serif;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .info-list {
+    list-style: none;
+    margin: 12px 0 20px;
+  }
+  .info-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  .info-list li:last-child { border-bottom: none; }
+  .info-list li .bullet {
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    min-width: 18px;
+  }
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+  }
+  .info-table th {
+    background: var(--surface3);
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .info-table tr:hover td { background: var(--surface2); }
+
+  /* ── CANVAS / SVG GRAPHS ── */
+  .graph-wrap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .graph-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .graph-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  canvas, svg.chart { display: block; max-width: 100%; }
+
+  .graph-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 800px) { .graph-grid { grid-template-columns: 1fr; } }
+
+  /* ── QUIZ ── */
+  .quiz-q {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .quiz-q .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .quiz-q .q-text {
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+    transition: all 0.18s;
+    background: var(--surface);
+    text-align: left;
+  }
+  .quiz-opt:hover:not(.disabled) { border-color: var(--gold); color: var(--gold); }
+  .quiz-opt.correct { border-color: var(--green); background: rgba(93,184,138,0.08); color: var(--green); }
+  .quiz-opt.wrong { border-color: var(--red); background: rgba(217,96,96,0.08); color: var(--red); }
+  .quiz-opt.disabled { pointer-events: none; }
+  .quiz-feedback {
+    margin-top: 10px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-score-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .score-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+  }
+  .score-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 3px;
+    transition: width 0.5s;
+  }
+  .reset-btn {
+    padding: 8px 18px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .key-tag {
+    display: inline-block;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--blue);
+    margin: 2px;
+  }
+  .note-block {
+    background: rgba(212,168,71,0.06);
+    border: 1px solid rgba(212,168,71,0.2);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .note-block strong { color: var(--gold); }
+  h3.sub {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--text);
+    margin: 24px 0 10px;
+    font-weight: 600;
+  }
+  p.body { font-size: 15px; margin-bottom: 12px; color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div class="tag">Study Prep</div>
+    <h1>Macroeconomics<br>Seminars</h1>
+    <p>Weeks 1–5 · EUBA</p>
+  </div>
+  <div class="nav-label">Weeks</div>
+  <div class="nav-item active" onclick="showWeek(1)">
+    <span class="nav-week">W01</span>
+    <span class="nav-title">Intro &amp; Databases</span>
+  </div>
+  <div class="nav-item" onclick="showWeek(2)">
+    <span class="nav-week">W02</span>
+    <span class="nav-title">GDP &amp; AD–AS Model</span>
+  </div>
+  <div class="nav-item" onclick="showWeek(3)">
+    <span class="nav-week">W03</span>
+    <span class="nav-title">Consumption, Savings &amp; Investment</span>
+  </div>
+  <div class="nav-item" onclick="showWeek(4)">
+    <span class="nav-week">W04</span>
+    <span class="nav-title">Long Run &amp; Growth</span>
+  </div>
+  <div class="nav-item" onclick="showWeek(5)">
+    <span class="nav-week">W05</span>
+    <span class="nav-title">Short Run &amp; Business Cycle</span>
+  </div>
+  <div class="sidebar-footer">pavyel_ · macro prep v1.0</div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ════════════════════ WEEK 1 ════════════════════ -->
+<section class="week-panel active" id="w1">
+  <div class="week-hero" data-week="01">
+    <div class="week-badge">Week 01</div>
+    <h2>Introductory Seminar &amp; Statistical Databases</h2>
+    <p>Course overview, assessment structure, and working with major international statistical databases.</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab(this,'w1-notes')">Notes</button>
+    <button class="tab-btn" onclick="showTab(this,'w1-quiz')">Quiz</button>
+  </div>
+
+  <div class="tab-content active" id="w1-notes">
+    <div class="section-title">Key Databases &amp; Organizations</div>
+    <table class="info-table">
+      <thead><tr><th>Organization</th><th>Database / Tool</th><th>Coverage</th><th>URL</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Eurostat</strong></td><td>European Statistical System</td><td>EU / EEA macroeconomic, social, environmental data</td><td><span class="key-tag">ec.europa.eu/eurostat</span></td></tr>
+        <tr><td><strong>World Bank</strong></td><td>World Development Indicators (WDI)</td><td>Development data for 200+ countries</td><td><span class="key-tag">data.worldbank.org</span></td></tr>
+        <tr><td><strong>IMF</strong></td><td>World Economic Outlook (WEO)</td><td>GDP, inflation, fiscal, BOP forecasts</td><td><span class="key-tag">imf.org/en/data</span></td></tr>
+        <tr><td><strong>OECD</strong></td><td>OECD.Stat / Data Explorer</td><td>36+ developed economies, structural stats</td><td><span class="key-tag">stats.oecd.org</span></td></tr>
+        <tr><td><strong>UN</strong></td><td>UNdata / SNA</td><td>National accounts, demographic, trade</td><td><span class="key-tag">data.un.org</span></td></tr>
+        <tr><td><strong>ECB</strong></td><td>Statistical Data Warehouse</td><td>Euro area monetary &amp; financial stats</td><td><span class="key-tag">sdw.ecb.europa.eu</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">Assessment Conditions — Key Points</div>
+    <ul class="info-list">
+      <li><span class="bullet">▸</span> Seminars involve working directly with real data from statistical databases</li>
+      <li><span class="bullet">▸</span> Know how to navigate Eurostat and World Bank data portals</li>
+      <li><span class="bullet">▸</span> Understand data series: frequency (annual/quarterly), base years, seasonal adjustment</li>
+      <li><span class="bullet">▸</span> Distinguish between <strong>current prices</strong> (nominal) vs <strong>constant prices</strong> (real)</li>
+      <li><span class="bullet">▸</span> NACE Rev.2 classification for sectors; ESA 2010 for national accounts in EU</li>
+    </ul>
+
+    <div class="section-title">ESA 2010 Basics</div>
+    <p class="body">The <strong>European System of Accounts (ESA 2010)</strong> is the EU's harmonised framework for national accounts, consistent with the global UN System of National Accounts (SNA 2008). It defines how GDP, income, and expenditure are recorded across institutional sectors.</p>
+    <div class="concept-grid">
+      <div class="concept-card"><h4>Institutional Sectors</h4><p>Households (S14), Non-Financial Corporations (S11), Financial Corporations (S12), General Government (S13), Non-Profit Institutions (S15), Rest of the World (S2)</p></div>
+      <div class="concept-card"><h4>Transactions</h4><p>P.1 Output, P.2 Intermediate consumption, P.3 Final consumption, P.5 Gross capital formation, P.6 Exports, P.7 Imports</p></div>
+      <div class="concept-card"><h4>Balancing Items</h4><p>B.1g = GDP (Value Added at market prices), B.6g = Gross Disposable Income, B.8g = Gross Saving</p></div>
+      <div class="concept-card"><h4>Recording Principles</h4><p>Accrual basis, market prices, residence principle, consistency between supply and use</p></div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="w1-quiz">
+    <div class="quiz-score-bar">
+      <div><div class="score-label">Score</div><div class="score-val" id="w1-score">0/5</div></div>
+      <div class="score-track"><div class="score-fill" id="w1-fill" style="width:0%"></div></div>
+      <button class="reset-btn" onclick="resetQuiz('w1')">↺ Reset</button>
+    </div>
+    <div id="w1-qbox"></div>
+  </div>
+</section>
+
+<!-- ════════════════════ WEEK 2 ════════════════════ -->
+<section class="week-panel" id="w2">
+  <div class="week-hero" data-week="02">
+    <div class="week-badge">Week 02</div>
+    <h2>GDP, Alternative Measures &amp; AD–AS Model</h2>
+    <p>Measurement methods, nominal vs real GDP, limitations of GDP, and the Aggregate Demand–Aggregate Supply framework.</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab(this,'w2-notes')">Notes</button>
+    <button class="tab-btn" onclick="showTab(this,'w2-graphs')">Graphs</button>
+    <button class="tab-btn" onclick="showTab(this,'w2-quiz')">Quiz</button>
+  </div>
+
+  <div class="tab-content active" id="w2-notes">
+    <div class="section-title">Three Approaches to GDP</div>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>🏷 Expenditure Approach</h4>
+        <p>Sums all spending on final goods &amp; services.<br><strong>GDP = C + I + G + NX</strong></p>
+      </div>
+      <div class="concept-card">
+        <h4>💰 Income Approach</h4>
+        <p>Sums all incomes earned in production.<br><strong>GDP = W + GOS + T_prod – Subsidies</strong></p>
+      </div>
+      <div class="concept-card">
+        <h4>🏭 Output (Value Added) Approach</h4>
+        <p>Sums value added at each stage of production.<br><strong>GDP = Σ (Output – Intermediate Consumption)</strong></p>
+      </div>
+    </div>
+    <div class="formula-box">
+      <div class="label">Expenditure Approach Components:</div>
+      C  = Private Consumption<br>
+      I  = Gross Fixed Capital Formation + Δ Inventories<br>
+      G  = Government Consumption + Public Investment<br>
+      NX = Exports (X) − Imports (M)
+    </div>
+
+    <h3 class="sub">Nominal vs. Real GDP</h3>
+    <div class="formula-box">
+      <div class="label">Key formulas:</div>
+      Real GDP = Nominal GDP / GDP Deflator × 100<br>
+      GDP Deflator = (Nominal GDP / Real GDP) × 100<br>
+      GDP Growth Rate = (GDP_t − GDP_{t-1}) / GDP_{t-1} × 100%<br>
+      GDP per capita = GDP / Population
+    </div>
+    <div class="note-block"><strong>CPI vs GDP Deflator:</strong> CPI measures price changes for a fixed basket of consumer goods. GDP Deflator covers ALL domestically produced goods &amp; services and uses a changing basket — broader but only domestic.</div>
+
+    <div class="section-title">Limitations of GDP &amp; Alternative Measures</div>
+    <table class="info-table">
+      <thead><tr><th>Measure</th><th>What it captures</th><th>Key indicator</th></tr></thead>
+      <tbody>
+        <tr><td><strong>HDI</strong> Human Development Index</td><td>Health, education, income</td><td>Life expectancy, schooling, GNI per capita</td></tr>
+        <tr><td><strong>GPI</strong> Genuine Progress Indicator</td><td>Adjusts GDP for inequality, crime, pollution</td><td>Can decline while GDP rises</td></tr>
+        <tr><td><strong>Happiness / Well-Being</strong></td><td>Subjective life satisfaction, social trust</td><td>World Happiness Report (Gallup)</td></tr>
+        <tr><td><strong>Green GDP</strong></td><td>Deducts natural resource depletion</td><td>Adjusted Net Savings (World Bank)</td></tr>
+        <tr><td><strong>Gini Coefficient</strong></td><td>Income distribution / inequality</td><td>0 = perfect equality, 1 = maximum inequality</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">AD–AS Model Basics</div>
+    <p class="body">The AD–AS model explains short-run fluctuations and long-run equilibrium in an economy through the interaction of aggregate demand and aggregate supply.</p>
+    <ul class="info-list">
+      <li><span class="bullet">▸</span> <strong>AD curve</strong> slopes downward: higher price level → lower real wealth, higher interest rates, weaker net exports</li>
+      <li><span class="bullet">▸</span> <strong>SRAS curve</strong> slopes upward: higher prices → higher profits → more output (in short run, wages/costs sticky)</li>
+      <li><span class="bullet">▸</span> <strong>LRAS curve</strong> is vertical at potential GDP — price level has no effect on real output in long run</li>
+      <li><span class="bullet">▸</span> Long-run equilibrium: AD = SRAS = LRAS (all three curves intersect)</li>
+    </ul>
+  </div>
+
+  <div class="tab-content" id="w2-graphs">
+    <div class="graph-grid">
+      <div class="graph-wrap">
+        <div class="graph-title">AD–AS Model</div>
+        <div class="graph-subtitle">Aggregate Demand, Short-Run &amp; Long-Run Aggregate Supply</div>
+        <canvas id="adasCanvas" width="420" height="340"></canvas>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph-title">GDP Components (Typical Advanced Economy)</div>
+        <div class="graph-subtitle">Expenditure approach breakdown — approximate shares</div>
+        <canvas id="gdpPieCanvas" width="420" height="340"></canvas>
+      </div>
+    </div>
+    <div class="graph-wrap">
+      <div class="graph-title">Nominal vs. Real GDP — Stylised Illustration</div>
+      <div class="graph-subtitle">Nominal GDP inflated by price level; Real GDP removes price changes</div>
+      <canvas id="nomRealCanvas" width="860" height="260"></canvas>
+    </div>
+  </div>
+
+  <div class="tab-content" id="w2-quiz">
+    <div class="quiz-score-bar">
+      <div><div class="score-label">Score</div><div class="score-val" id="w2-score">0/6</div></div>
+      <div class="score-track"><div class="score-fill" id="w2-fill" style="width:0%"></div></div>
+      <button class="reset-btn" onclick="resetQuiz('w2')">↺ Reset</button>
+    </div>
+    <div id="w2-qbox"></div>
+  </div>
+</section>
+
+<!-- ════════════════════ WEEK 3 ════════════════════ -->
+<section class="week-panel" id="w3">
+  <div class="week-hero" data-week="03">
+    <div class="week-badge">Week 03</div>
+    <h2>Consumption, Savings &amp; Investment</h2>
+    <p>Consumption and savings functions, marginal and average propensities, and the savings–investment equilibrium.</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab(this,'w3-notes')">Notes</button>
+    <button class="tab-btn" onclick="showTab(this,'w3-graphs')">Graphs</button>
+    <button class="tab-btn" onclick="showTab(this,'w3-quiz')">Quiz</button>
+  </div>
+
+  <div class="tab-content active" id="w3-notes">
+    <div class="section-title">Consumption Function</div>
+    <div class="formula-box">
+      <div class="label">Keynesian Consumption Function:</div>
+      C = C₀ + c·Yd<br><br>
+      C₀ = Autonomous consumption (independent of income)<br>
+      c  = Marginal Propensity to Consume (MPC), 0 &lt; c &lt; 1<br>
+      Yd = Disposable income (Y − T)
+    </div>
+    <div class="concept-grid">
+      <div class="concept-card"><h4>MPC — Marginal Propensity to Consume</h4><p>MPC = ΔC / ΔY<br>Fraction of each additional unit of income spent on consumption. Typically 0.6–0.9 in developed economies.</p></div>
+      <div class="concept-card"><h4>MPS — Marginal Propensity to Save</h4><p>MPS = ΔS / ΔY = 1 − MPC<br>Fraction of each additional unit of income saved.</p></div>
+      <div class="concept-card"><h4>APC — Average Propensity to Consume</h4><p>APC = C / Y<br>Fraction of total income spent on consumption. APC &gt; 1 at low incomes (dissaving), falls as Y rises.</p></div>
+      <div class="concept-card"><h4>APS — Average Propensity to Save</h4><p>APS = S / Y = 1 − APC<br>Fraction of total income saved. APS + APC = 1 always.</p></div>
+    </div>
+
+    <div class="section-title">Savings Function</div>
+    <div class="formula-box">
+      <div class="label">Savings Function (derived from consumption):</div>
+      S = Yd − C = −C₀ + (1 − c)·Yd = −C₀ + MPS·Yd
+    </div>
+    <div class="note-block"><strong>Break-even point:</strong> Where C = Yd (consumption equals income), meaning S = 0. Below this point, households dissave (consume more than income). Above it, they save.</div>
+
+    <div class="section-title">Types of Savings</div>
+    <table class="info-table">
+      <thead><tr><th>Type</th><th>Formula</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Private Savings (Sp)</strong></td><td>Sp = Yd − C = (Y − T) − C</td><td>Household &amp; firm saving</td></tr>
+        <tr><td><strong>Public Savings (Sg)</strong></td><td>Sg = T − G</td><td>Budget surplus (+) or deficit (−)</td></tr>
+        <tr><td><strong>National Savings (S)</strong></td><td>S = Sp + Sg = Y − C − G</td><td>Total domestic saving</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">Savings–Investment Equilibrium</div>
+    <div class="formula-box">
+      <div class="label">Closed economy identity:</div>
+      Y = C + I + G<br>
+      → Y − C − G = I<br>
+      → S (National Savings) = I<br><br>
+      <div class="label">Open economy:</div>
+      S = I + NX (or: S − I = CA, the current account)
+    </div>
+
+    <div class="section-title">The Multiplier</div>
+    <div class="formula-box">
+      k = 1 / (1 − MPC) = 1 / MPS<br><br>
+      If MPC = 0.8 → k = 1/0.2 = 5<br>
+      A €100 increase in autonomous spending → €500 increase in equilibrium GDP
+    </div>
+  </div>
+
+  <div class="tab-content" id="w3-graphs">
+    <div class="graph-grid">
+      <div class="graph-wrap">
+        <div class="graph-title">Consumption Function</div>
+        <div class="graph-subtitle">C = C₀ + MPC·Yd  with the 45° line (C = Yd)</div>
+        <canvas id="consFuncCanvas" width="420" height="360"></canvas>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph-title">Savings Function</div>
+        <div class="graph-subtitle">S = −C₀ + MPS·Yd  (derived from consumption)</div>
+        <canvas id="savFuncCanvas" width="420" height="360"></canvas>
+      </div>
+    </div>
+    <div class="graph-wrap">
+      <div class="graph-title">Savings–Investment Equilibrium</div>
+      <div class="graph-subtitle">Interest rate adjusts to equate S and I (loanable funds market)</div>
+      <canvas id="siEqCanvas" width="860" height="260"></canvas>
+    </div>
+  </div>
+
+  <div class="tab-content" id="w3-quiz">
+    <div class="quiz-score-bar">
+      <div><div class="score-label">Score</div><div class="score-val" id="w3-score">0/6</div></div>
+      <div class="score-track"><div class="score-fill" id="w3-fill" style="width:0%"></div></div>
+      <button class="reset-btn" onclick="resetQuiz('w3')">↺ Reset</button>
+    </div>
+    <div id="w3-qbox"></div>
+  </div>
+</section>
+
+<!-- ════════════════════ WEEK 4 ════════════════════ -->
+<section class="week-panel" id="w4">
+  <div class="week-hero" data-week="04">
+    <div class="week-badge">Week 04</div>
+    <h2>Long Run: Economic Growth</h2>
+    <p>Sources of growth, labour productivity, the Solow model, living standards comparison, and sustainable growth.</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab(this,'w4-notes')">Notes</button>
+    <button class="tab-btn" onclick="showTab(this,'w4-graphs')">Graphs</button>
+    <button class="tab-btn" onclick="showTab(this,'w4-quiz')">Quiz</button>
+  </div>
+
+  <div class="tab-content active" id="w4-notes">
+    <div class="section-title">Measuring Economic Growth</div>
+    <div class="formula-box">
+      <div class="label">Growth Rate:</div>
+      g = (Y_t − Y_{t-1}) / Y_{t-1} × 100%<br><br>
+      <div class="label">Rule of 70 (Doubling Time):</div>
+      t ≈ 70 / g    (e.g. 3% growth → doubles in ~23 years)<br><br>
+      <div class="label">Labour Productivity:</div>
+      LP = Y / L     (output per worker or per hour worked)
+    </div>
+
+    <div class="section-title">Sources of Growth (Solow Model)</div>
+    <div class="concept-grid">
+      <div class="concept-card"><h4>Physical Capital (K)</h4><p>Machinery, equipment, infrastructure. Subject to diminishing returns — each additional unit adds less output than the previous.</p></div>
+      <div class="concept-card"><h4>Human Capital (H)</h4><p>Education, skills, health of the workforce. Accumulates through schooling and training. Key driver of productivity differences.</p></div>
+      <div class="concept-card"><h4>Technology / TFP</h4><p>Total Factor Productivity — the "Solow residual." Technological progress, institutional quality, innovation. Only source of sustained long-run growth per capita.</p></div>
+      <div class="concept-card"><h4>Natural Resources &amp; Land</h4><p>Important but not sufficient for growth. Many resource-poor economies (South Korea, Singapore) grew rapidly through human &amp; physical capital accumulation.</p></div>
+    </div>
+    <div class="formula-box">
+      <div class="label">Solow Production Function (per worker):</div>
+      y = A · f(k)    where y = Y/L,  k = K/L,  A = Technology level<br><br>
+      <div class="label">Growth Accounting Equation:</div>
+      ΔY/Y = α·ΔK/K + (1−α)·ΔL/L + ΔA/A<br>
+      (α ≈ 0.33 for capital share in most economies)
+    </div>
+
+    <div class="section-title">Comparing Living Standards</div>
+    <ul class="info-list">
+      <li><span class="bullet">▸</span> Use <strong>GDP per capita (PPP)</strong> for cross-country comparisons — adjusts for price differences</li>
+      <li><span class="bullet">▸</span> <strong>Convergence hypothesis:</strong> poor countries grow faster than rich ones (diminishing returns to capital)</li>
+      <li><span class="bullet">▸</span> <strong>Conditional convergence:</strong> countries converge to their own steady state (depends on savings rate, institutions)</li>
+      <li><span class="bullet">▸</span> <strong>Steady state:</strong> Investment = Depreciation; capital per worker and output per worker stop growing</li>
+    </ul>
+
+    <div class="section-title">Sustainable Growth</div>
+    <div class="note-block"><strong>Green / Inclusive Growth:</strong> Growth that does not deplete natural capital faster than it can be regenerated. Measured by: Adjusted Net Savings (genuine savings), ecological footprint, carbon intensity of GDP.</div>
+    <ul class="info-list">
+      <li><span class="bullet">▸</span> <strong>Genuine Savings</strong> = Gross savings − depreciation of physical capital − depletion of natural resources + human capital investment</li>
+      <li><span class="bullet">▸</span> Negative genuine savings → long-run welfare is declining despite positive GDP growth</li>
+      <li><span class="bullet">▸</span> SDGs (Sustainable Development Goals) provide a framework for measuring sustainability across 17 dimensions</li>
+    </ul>
+  </div>
+
+  <div class="tab-content" id="w4-graphs">
+    <div class="graph-grid">
+      <div class="graph-wrap">
+        <div class="graph-title">Solow Model — Steady State</div>
+        <div class="graph-subtitle">Investment vs. depreciation determines steady-state capital per worker</div>
+        <canvas id="solowCanvas" width="420" height="340"></canvas>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph-title">GDP per Capita — Selected Countries (Stylised)</div>
+        <div class="graph-subtitle">Comparative living standards at PPP (approximate illustration)</div>
+        <canvas id="gdpCapCanvas" width="420" height="340"></canvas>
+      </div>
+    </div>
+    <div class="graph-wrap">
+      <div class="graph-title">Effect of Higher Savings Rate on Steady State</div>
+      <div class="graph-subtitle">Higher savings shifts investment curve up → new, higher steady state k*</div>
+      <canvas id="solowShiftCanvas" width="860" height="260"></canvas>
+    </div>
+  </div>
+
+  <div class="tab-content" id="w4-quiz">
+    <div class="quiz-score-bar">
+      <div><div class="score-label">Score</div><div class="score-val" id="w4-score">0/6</div></div>
+      <div class="score-track"><div class="score-fill" id="w4-fill" style="width:0%"></div></div>
+      <button class="reset-btn" onclick="resetQuiz('w4')">↺ Reset</button>
+    </div>
+    <div id="w4-qbox"></div>
+  </div>
+</section>
+
+<!-- ════════════════════ WEEK 5 ════════════════════ -->
+<section class="week-panel" id="w5">
+  <div class="week-hero" data-week="05">
+    <div class="week-badge">Week 05</div>
+    <h2>Short Run: Business Cycle</h2>
+    <p>Business cycle phases, AD–AS model shocks, statistical indicators for cycle analysis, and demand vs supply shocks.</p>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab(this,'w5-notes')">Notes</button>
+    <button class="tab-btn" onclick="showTab(this,'w5-graphs')">Graphs</button>
+    <button class="tab-btn" onclick="showTab(this,'w5-quiz')">Quiz</button>
+  </div>
+
+  <div class="tab-content active" id="w5-notes">
+    <div class="section-title">Business Cycle Phases</div>
+    <div class="concept-grid">
+      <div class="concept-card"><h4>🔼 Expansion (Recovery)</h4><p>Output above trough, rising GDP, falling unemployment, increasing investment. Consumer and business confidence improves.</p></div>
+      <div class="concept-card"><h4>⛰ Peak</h4><p>Maximum GDP of the cycle. Unemployment at cyclical low. Inflation pressure builds. Economy operating above potential output.</p></div>
+      <div class="concept-card"><h4>🔽 Contraction (Recession)</h4><p>GDP falls, unemployment rises, investment contracts. A recession is technically 2+ consecutive quarters of negative real GDP growth.</p></div>
+      <div class="concept-card"><h4>🏔 Trough</h4><p>Minimum GDP of the cycle. Unemployment at cyclical high. Deflationary pressure. Starting point for next expansion.</p></div>
+    </div>
+
+    <div class="section-title">AD–AS and Business Cycle Shocks</div>
+    <table class="info-table">
+      <thead><tr><th>Shock Type</th><th>Cause</th><th>Effect on AD/AS</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Positive Demand Shock</strong></td><td>↑ Consumer confidence, fiscal stimulus, ↑ money supply</td><td>AD shifts right</td><td>↑ GDP, ↑ Price level (inflationary gap)</td></tr>
+        <tr><td><strong>Negative Demand Shock</strong></td><td>↓ Consumer confidence, fiscal austerity, credit crunch</td><td>AD shifts left</td><td>↓ GDP, ↓ Price level (recessionary gap)</td></tr>
+        <tr><td><strong>Positive Supply Shock</strong></td><td>Technology improvement, ↓ oil prices, productivity gain</td><td>SRAS shifts right</td><td>↑ GDP, ↓ Price level</td></tr>
+        <tr><td><strong>Negative Supply Shock</strong></td><td>↑ Oil prices, natural disaster, ↑ wages</td><td>SRAS shifts left</td><td>↓ GDP, ↑ Price level (stagflation)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">Statistical Indicators for Cycle Analysis</div>
+    <div class="concept-grid">
+      <div class="concept-card"><h4>Leading Indicators</h4><p>Change <em>before</em> the economy. Stock prices, building permits, consumer confidence, M2 money supply, PMI (Purchasing Managers' Index).</p></div>
+      <div class="concept-card"><h4>Coincident Indicators</h4><p>Move <em>with</em> the economy in real time. GDP, industrial production, employment, personal income, retail sales.</p></div>
+      <div class="concept-card"><h4>Lagging Indicators</h4><p>Change <em>after</em> the economy. Unemployment rate, CPI, bank loan interest rates, inventory-to-sales ratio.</p></div>
+    </div>
+
+    <div class="section-title">Output Gap</div>
+    <div class="formula-box">
+      <div class="label">Output Gap:</div>
+      Output Gap = (Actual GDP − Potential GDP) / Potential GDP × 100%<br><br>
+      Positive gap (+) → Economy overheating, inflationary pressure<br>
+      Negative gap (−) → Recessionary gap, unemployment above natural rate
+    </div>
+    <div class="note-block"><strong>Okun's Law:</strong> For every 1% increase in the unemployment rate above its natural rate, GDP falls approximately 2% below potential. ΔY/Y ≈ −2 × Δu</div>
+  </div>
+
+  <div class="tab-content" id="w5-graphs">
+    <div class="graph-wrap">
+      <div class="graph-title">Business Cycle — Stylised Wave</div>
+      <div class="graph-subtitle">Phases of the cycle relative to potential output (trend growth path)</div>
+      <canvas id="cycleCanvas" width="860" height="220"></canvas>
+    </div>
+    <div class="graph-grid" style="margin-top:16px">
+      <div class="graph-wrap">
+        <div class="graph-title">Demand Shock in AD–AS</div>
+        <div class="graph-subtitle">Negative demand shock shifts AD left → recessionary gap</div>
+        <canvas id="demandShockCanvas" width="420" height="320"></canvas>
+      </div>
+      <div class="graph-wrap">
+        <div class="graph-title">Supply Shock in AD–AS</div>
+        <div class="graph-subtitle">Negative supply shock (e.g. oil price spike) → stagflation</div>
+        <canvas id="supplyShockCanvas" width="420" height="320"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="w5-quiz">
+    <div class="quiz-score-bar">
+      <div><div class="score-label">Score</div><div class="score-val" id="w5-score">0/6</div></div>
+      <div class="score-track"><div class="score-fill" id="w5-fill" style="width:0%"></div></div>
+      <button class="reset-btn" onclick="resetQuiz('w5')">↺ Reset</button>
+    </div>
+    <div id="w5-qbox"></div>
+  </div>
+</section>
+
+</main><!-- /main -->
+
+<script>
+// ───────────────────────────────────────────
+// QUIZ DATA
+// ───────────────────────────────────────────
+const quizData = {
+  w1: [
+    { q:"Which database is maintained by the EU's statistical office and focuses on European data?", opts:["World Development Indicators","IMF World Economic Outlook","Eurostat","UNdata"], ans:2, exp:"Eurostat is the statistical office of the European Union." },
+    { q:"What does ESA 2010 stand for?", opts:["European Statistical Analysis 2010","European System of Accounts 2010","Economic Survey of Assets 2010","Eurozone Savings Aggregates 2010"], ans:1, exp:"ESA 2010 is the European System of Accounts — the EU's harmonised national accounts framework." },
+    { q:"Which organization publishes the World Economic Outlook (WEO)?", opts:["World Bank","OECD","Eurostat","IMF"], ans:3, exp:"The IMF publishes the WEO twice a year with GDP and macroeconomic forecasts." },
+    { q:"In ESA 2010 terminology, what does 'B.1g' represent?", opts:["Gross National Income","Gross Disposable Income","GDP (Gross Value Added at market prices)","Gross Saving"], ans:2, exp:"B.1g is the balancing item for Gross Domestic Product in the ESA 2010 framework." },
+    { q:"Real GDP data uses _____ prices, while nominal GDP uses _____ prices.", opts:["current; constant","constant; current","market; producer","deflated; inflated"], ans:1, exp:"Real GDP uses constant (base-year) prices to remove inflation; nominal GDP uses current prices." }
+  ],
+  w2: [
+    { q:"Which of the following correctly lists the four components of GDP in the expenditure approach?", opts:["C + I + G + NX","W + R + I + P","C + S + T + NX","Y + G + I + NX"], ans:0, exp:"GDP = Consumption + Investment + Government Expenditure + Net Exports." },
+    { q:"If nominal GDP = €1,200 and the GDP deflator = 120, what is real GDP?", opts:["€1,440","€1,000","€1,200","€1,080"], ans:1, exp:"Real GDP = (Nominal GDP / Deflator) × 100 = (1200/120) × 100 = €1,000." },
+    { q:"The LRAS curve is vertical because:", opts:["Wages are sticky in the long run","Real output is determined by potential GDP, not the price level","Higher prices always reduce output","Government spending is fixed"], ans:1, exp:"In the long run, an economy produces at its potential GDP regardless of the price level." },
+    { q:"Which alternative measure adjusts GDP for inequality, environmental damage, and crime costs?", opts:["HDI","Gini Coefficient","GPI (Genuine Progress Indicator)","Green GDP"], ans:2, exp:"The GPI starts with personal consumption and adjusts for social and environmental costs." },
+    { q:"A rightward shift of the AD curve could be caused by:", opts:["A fall in consumer confidence","Higher income taxes","Expansionary monetary policy (lower interest rates)","An increase in oil prices"], ans:2, exp:"Lower interest rates reduce borrowing costs, stimulating consumption and investment → AD shifts right." },
+    { q:"The GDP deflator differs from the CPI because:", opts:["It measures only imported goods","It uses a fixed basket, while CPI does not","It covers all domestically produced goods, not just a consumer basket","It is always higher than CPI"], ans:2, exp:"The GDP deflator covers ALL domestic production; CPI covers a fixed basket of consumer goods." }
+  ],
+  w3: [
+    { q:"If MPC = 0.75, what is the value of the fiscal multiplier?", opts:["0.75","1.33","3","4"], ans:3, exp:"Multiplier k = 1/(1−MPC) = 1/0.25 = 4." },
+    { q:"In the consumption function C = C₀ + c·Yd, what does C₀ represent?", opts:["Marginal propensity to consume","Tax rate","Autonomous consumption","Average savings rate"], ans:2, exp:"C₀ is autonomous consumption — spending that occurs regardless of income (e.g. financed by borrowing or past savings)." },
+    { q:"Which statement about MPC and MPS is ALWAYS true?", opts:["MPC = MPS","MPC × MPS = 1","MPC + MPS = 1","MPC > MPS"], ans:2, exp:"Because Y is split entirely between consumption and saving: MPC + MPS = 1." },
+    { q:"National savings equals:", opts:["Private savings only","Government tax revenue minus expenditure","Private savings + Public savings = Y − C − G","Investment minus depreciation"], ans:2, exp:"National Savings S = Sp + Sg = (Y−T−C) + (T−G) = Y − C − G." },
+    { q:"At the break-even point of the consumption function:", opts:["S = C","C = Y (APC = 1, S = 0)","MPC = MPS","Investment equals savings"], ans:1, exp:"Break-even is where consumption equals income, so saving is zero." },
+    { q:"In a closed economy at equilibrium, which identity holds?", opts:["C = I","S = I","Y = C + S − I","T = G + I"], ans:1, exp:"In a closed economy (no government): Y = C + I, and Y − C = S, therefore S = I." }
+  ],
+  w4: [
+    { q:"According to the Solow model, what is the ONLY source of sustained long-run growth in per-capita output?", opts:["Capital accumulation","Population growth","Technological progress (TFP)","Higher savings rate"], ans:2, exp:"Capital and labour face diminishing returns; only technology (TFP) can sustain per-capita growth in the long run." },
+    { q:"Using the Rule of 70, approximately how many years will it take a country growing at 3.5% per year to double its GDP?", opts:["14 years","20 years","35 years","70 years"], ans:1, exp:"t ≈ 70/3.5 = 20 years." },
+    { q:"Which of the following best measures labour productivity?", opts:["GDP × population","GDP / hours worked","GDP deflator / CPI","Exports / Imports"], ans:1, exp:"Labour productivity = output per unit of labour input = GDP divided by hours worked (or by number of workers)." },
+    { q:"Convergence hypothesis predicts that poor countries grow faster than rich ones because:", opts:["They have lower tax rates","They receive more foreign aid","They have lower capital per worker — higher marginal product of capital","Their workers work more hours"], ans:2, exp:"Diminishing returns to capital mean that the marginal product of capital is higher in capital-scarce countries." },
+    { q:"'Genuine Savings' (Adjusted Net Savings) is negative when:", opts:["A government runs a budget deficit","Investment exceeds consumption","Depletion of natural resources exceeds investment in human and physical capital","Inflation is above the growth rate"], ans:2, exp:"Negative genuine savings signals that a country is consuming its wealth faster than it accumulates it — unsustainable." },
+    { q:"In the Solow model, 'steady state' refers to:", opts:["Zero GDP growth","The point where investment equals depreciation and capital per worker is constant","When consumption equals investment","A situation of full employment only"], ans:1, exp:"At steady state, new investment exactly replaces depreciated capital, so k (capital per worker) stops changing." }
+  ],
+  w5: [
+    { q:"A recession is technically defined as:", opts:["A negative output gap for one quarter","Two or more consecutive quarters of negative real GDP growth","An unemployment rate above 5%","A decline in the stock market for 6 months"], ans:1, exp:"The standard definition is two consecutive quarters of negative real GDP growth." },
+    { q:"A negative supply shock (e.g. sudden oil price spike) will cause:", opts:["AD to shift right, increasing output and prices","SRAS to shift left, causing stagflation (↓GDP, ↑prices)","LRAS to shift right, increasing potential output","AD to shift left, causing deflation"], ans:1, exp:"Negative supply shocks shift SRAS left → output falls and price level rises simultaneously (stagflation)." },
+    { q:"Which of the following is a LEADING indicator of the business cycle?", opts:["Unemployment rate","Industrial production","PMI (Purchasing Managers' Index)","Bank loan interest rates"], ans:2, exp:"The PMI is a leading indicator — it reflects expected future orders and business conditions." },
+    { q:"If actual GDP < Potential GDP, the economy is in a:", opts:["Positive output gap","Inflationary gap","Recessionary (negative) gap","Stagflationary state"], ans:2, exp:"Actual GDP below potential = recessionary gap (negative output gap)." },
+    { q:"Okun's Law states that for each 1% increase in unemployment above its natural rate, GDP falls by approximately:", opts:["0.5%","1%","2%","5%"], ans:2, exp:"Okun's Law: ΔY/Y ≈ −2 × Δu. Each 1pp rise in unemployment → ~2% fall in output gap." },
+    { q:"Which phase of the business cycle is characterised by maximum real GDP before the economy begins to contract?", opts:["Trough","Expansion","Peak","Recovery"], ans:2, exp:"The peak is the highest point of the business cycle, after which contraction begins." }
+  ]
+};
+
+const quizState = {};
+['w1','w2','w3','w4','w5'].forEach(w => {
+  quizState[w] = { correct: 0, answered: 0 };
+});
+
+function buildQuiz(week) {
+  const box = document.getElementById(`${week}-qbox`);
+  if (!box || box.children.length > 0) return;
+  const qs = quizData[week];
+  const total = qs.length;
+  qs.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.innerHTML = `
+      <div class="q-num">Q${i+1} of ${total}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="quiz-options">
+        ${item.opts.map((o,j)=>`<button class="quiz-opt" data-idx="${j}" onclick="answerQ(this,'${week}',${i},${j})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="${week}-fb-${i}">${item.exp}</div>
+    `;
+    box.appendChild(div);
+  });
+}
+
+function answerQ(btn, week, qi, chosen) {
+  const item = quizData[week][qi];
+  const qDiv = btn.closest('.quiz-q');
+  const opts = qDiv.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.classList.add('disabled'));
+  if (chosen === item.ans) {
+    btn.classList.add('correct');
+    quizState[week].correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[item.ans].classList.add('correct');
+  }
+  quizState[week].answered++;
+  document.getElementById(`${week}-fb-${qi}`).classList.add('show');
+  updateScore(week);
+}
+
+function updateScore(week) {
+  const { correct, answered } = quizState[week];
+  const total = quizData[week].length;
+  document.getElementById(`${week}-score`).textContent = `${correct}/${total}`;
+  document.getElementById(`${week}-fill`).style.width = `${(correct/total)*100}%`;
+}
+
+function resetQuiz(week) {
+  quizState[week] = { correct: 0, answered: 0 };
+  const box = document.getElementById(`${week}-qbox`);
+  box.innerHTML = '';
+  updateScore(week);
+  buildQuiz(week);
+}
+
+// ───────────────────────────────────────────
+// NAVIGATION
+// ───────────────────────────────────────────
+function showWeek(n) {
+  document.querySelectorAll('.week-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.getElementById(`w${n}`).classList.add('active');
+  document.querySelectorAll('.nav-item')[n-1].classList.add('active');
+  buildQuiz(`w${n}`);
+  setTimeout(() => drawGraphs(n), 80);
+}
+
+function showTab(btn, contentId) {
+  const bar = btn.closest('.tab-bar');
+  bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = btn.closest('.week-panel');
+  panel.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById(contentId).classList.add('active');
+  if (contentId.includes('graph')) setTimeout(() => drawGraphs(parseInt(btn.closest('.week-panel').id.replace('w',''))), 80);
+}
+
+// ───────────────────────────────────────────
+// CANVAS DRAWING HELPERS
+// ───────────────────────────────────────────
+const C = (id) => { const el = document.getElementById(id); return el ? el.getContext('2d') : null; };
+
+const GOLD = '#d4a847';
+const GOLD2 = '#e8c76a';
+const BLUE = '#6b8cde';
+const GREEN = '#5db88a';
+const RED = '#d96060';
+const PURPLE = '#9b72cf';
+const MUTED = '#5a6080';
+const TEXT = '#ddd8cc';
+const BG = '#131620';
+const BORDER = '#252a40';
+
+function clearCanvas(ctx) {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
+function axisLabels(ctx, x0, y0, x1, y1, xLbl, yLbl) {
+  ctx.fillStyle = MUTED;
+  ctx.font = '12px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(xLbl, (x0+x1)/2, y1 + 28);
+  ctx.save(); ctx.translate(x0 - 32, (y0+y1)/2);
+  ctx.rotate(-Math.PI/2); ctx.fillText(yLbl, 0, 0); ctx.restore();
+}
+
+function drawAxes(ctx, x0, y0, w, h) {
+  ctx.strokeStyle = BORDER;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(x0, y0); ctx.lineTo(x0, y0+h);
+  ctx.lineTo(x0+w, y0+h);
+  ctx.stroke();
+}
+
+// ───────────────────────────────────────────
+// WEEK 2 GRAPHS
+// ───────────────────────────────────────────
+function drawADAS() {
+  const ctx = C('adasCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W = 420, H = 340, px = 55, py = 20, pw = 330, ph = 280;
+  ctx.fillStyle = BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx, px, py, pw, ph);
+  axisLabels(ctx, px, py, px+pw, py+ph, 'Real GDP', 'Price Level');
+
+  // AD curve (downward sloping)
+  ctx.strokeStyle = BLUE; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(px+20, py+30); ctx.lineTo(px+pw-20, py+ph-30); ctx.stroke();
+  ctx.fillStyle = BLUE; ctx.font = 'bold 13px Crimson Pro, serif';
+  ctx.fillText('AD', px+pw-15, py+ph-25);
+
+  // SRAS curve (upward sloping)
+  ctx.strokeStyle = GOLD; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(px+20, py+ph-30); ctx.lineTo(px+pw-20, py+30); ctx.stroke();
+  ctx.fillStyle = GOLD; ctx.fillText('SRAS', px+pw-15, py+35);
+
+  // LRAS vertical
+  const lrasX = px + pw/2 + 10;
+  ctx.strokeStyle = GREEN; ctx.lineWidth = 2.5;
+  ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(lrasX, py+10); ctx.lineTo(lrasX, py+ph); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = GREEN; ctx.fillText('LRAS', lrasX+6, py+20);
+
+  // Equilibrium dot
+  const eqX = lrasX, eqY = py + ph/2 + 10;
+  ctx.fillStyle = GOLD2;
+  ctx.beginPath(); ctx.arc(eqX, eqY, 5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = MUTED; ctx.font = '11px JetBrains Mono, monospace';
+  ctx.fillText('E*', eqX+8, eqY+4);
+}
+
+function drawGDPPie() {
+  const ctx = C('gdpPieCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W = 420, H = 340;
+  ctx.fillStyle = BG; ctx.fillRect(0,0,W,H);
+  const data = [{label:'C (Consumption)', val:0.58, col:BLUE},{label:'I (Investment)', val:0.19, col:GOLD},{label:'G (Govt)', val:0.20, col:GREEN},{label:'NX (Net Exports)', val:0.03, col:RED}];
+  const cx = 190, cy = 160, r = 110;
+  let start = -Math.PI/2;
+  data.forEach(d => {
+    const angle = d.val * Math.PI * 2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,start,start+angle);
+    ctx.closePath(); ctx.fillStyle = d.col; ctx.fill();
+    ctx.strokeStyle = BG; ctx.lineWidth = 2; ctx.stroke();
+    start += angle;
+  });
+  // legend
+  ctx.font = '13px Crimson Pro, serif';
+  data.forEach((d,i) => {
+    const lx = 310, ly = 100 + i*38;
+    ctx.fillStyle = d.col;
+    ctx.fillRect(lx, ly, 14, 14);
+    ctx.fillStyle = TEXT;
+    ctx.textAlign = 'left';
+    ctx.fillText(d.label, lx+20, ly+12);
+    ctx.fillStyle = MUTED; ctx.font = '11px JetBrains Mono, monospace';
+    ctx.fillText(`${(d.val*100).toFixed(0)}%`, lx+20, ly+26);
+    ctx.font = '13px Crimson Pro, serif';
+  });
+}
+
+function drawNomReal() {
+  const ctx = C('nomRealCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W = 860, H = 260, px = 60, py = 20, pw = 770, ph = 200;
+  ctx.fillStyle = BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx, px, py, pw, ph);
+  axisLabels(ctx, px, py, px+pw, py+ph, 'Year', 'GDP (index)');
+  const n = 12;
+  const nomVals = [], realVals = [];
+  for(let i=0;i<n;i++){
+    realVals.push(100+i*8);
+    nomVals.push(100+i*8+i*i*0.7);
+  }
+  function plotLine(vals, color, label) {
+    ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+    const max = Math.max(...nomVals)+10;
+    ctx.beginPath();
+    vals.forEach((v,i) => {
+      const x = px + (i/(n-1))*pw;
+      const y = py+ph - (v/max)*ph;
+      i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    const lx = px + pw + 8;
+    const ly = py+ph - (vals[n-1]/max)*ph;
+    ctx.fillStyle = color; ctx.font = 'bold 13px Crimson Pro, serif';
+    ctx.textAlign = 'left'; ctx.fillText(label, lx, ly);
+  }
+  plotLine(nomVals, GOLD, 'Nominal GDP');
+  plotLine(realVals, BLUE, 'Real GDP');
+}
+
+// ───────────────────────────────────────────
+// WEEK 3 GRAPHS
+// ───────────────────────────────────────────
+function drawConsFunc() {
+  const ctx = C('consFuncCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=420,H=360,px=60,py=20,pw=330,ph=300;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx,px,py,pw,ph);
+  axisLabels(ctx,px,py,px+pw,py+ph,'Disposable Income (Yd)','Consumption (C)');
+  const maxY=500, C0=40, mpc=0.8;
+  // 45 line
+  ctx.strokeStyle=BORDER; ctx.lineWidth=1.5; ctx.setLineDash([5,5]);
+  ctx.beginPath(); ctx.moveTo(px,py+ph); ctx.lineTo(px+pw,py); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=MUTED; ctx.font='12px Crimson Pro, serif';
+  ctx.textAlign='left'; ctx.fillText('45°', px+pw-20, py+8);
+  // consumption line
+  ctx.strokeStyle=GOLD; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=0;i<=pw;i+=5){
+    const yd=i/pw*maxY;
+    const c=C0+mpc*yd;
+    const x=px+i;
+    const y=py+ph-(c/maxY)*ph;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=GOLD; ctx.font='bold 13px Crimson Pro, serif';
+  ctx.fillText('C = C₀ + MPC·Yd', px+pw*0.55, py+ph*0.2);
+  // C0 annotation
+  const c0y=py+ph-(C0/maxY)*ph;
+  ctx.strokeStyle=MUTED; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(px,c0y); ctx.lineTo(px+10,c0y); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=MUTED; ctx.font='11px JetBrains Mono, monospace';
+  ctx.textAlign='right'; ctx.fillText('C₀', px-4, c0y+4);
+  // break-even
+  const beYd=C0/(1-mpc);
+  const bex=px+(beYd/maxY)*pw, bey=py+ph-(beYd/maxY)*ph;
+  ctx.fillStyle=GREEN; ctx.beginPath(); ctx.arc(bex,bey,5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=GREEN; ctx.font='11px JetBrains Mono, monospace'; ctx.textAlign='left';
+  ctx.fillText('Break-even', bex+8, bey-4);
+}
+
+function drawSavFunc() {
+  const ctx = C('savFuncCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=420,H=360,px=60,py=30,pw=330,ph=280;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  const maxY=500, C0=40, mps=0.2;
+  const zeroS=C0/mps;
+  const midPH=ph*0.5;
+  // axes (S can be negative)
+  ctx.strokeStyle=BORDER; ctx.lineWidth=1.5;
+  ctx.beginPath();
+  ctx.moveTo(px,py); ctx.lineTo(px,py+ph);
+  ctx.moveTo(px,py+midPH); ctx.lineTo(px+pw,py+midPH);
+  ctx.stroke();
+  // savings line
+  ctx.strokeStyle=PURPLE; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=0;i<=pw;i+=5){
+    const yd=i/pw*maxY;
+    const s=-C0+mps*yd;
+    const x=px+i;
+    const y=py+midPH-(s/(maxY*0.4))*ph*0.5;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=PURPLE; ctx.font='bold 13px Crimson Pro, serif';
+  ctx.textAlign='left'; ctx.fillText('S = −C₀ + MPS·Yd', px+pw*0.5, py+ph*0.2);
+  // dissaving / saving label
+  ctx.fillStyle=RED; ctx.font='11px JetBrains Mono, monospace';
+  ctx.fillText('Dissaving', px+8, py+midPH+20);
+  ctx.fillStyle=GREEN; ctx.fillText('Saving', px+pw*0.6, py+midPH-20);
+  // axis labels
+  ctx.fillStyle=MUTED; ctx.font='12px JetBrains Mono, monospace';
+  ctx.textAlign='center'; ctx.fillText('Disposable Income (Yd)', px+pw/2, py+ph+20);
+  ctx.save(); ctx.translate(px-32, py+ph/2); ctx.rotate(-Math.PI/2); ctx.fillText('Savings (S)', 0, 0); ctx.restore();
+}
+
+function drawSIeq() {
+  const ctx = C('siEqCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=860,H=260,px=60,py=20,pw=770,ph=200;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx,px,py,pw,ph);
+  axisLabels(ctx,px,py,px+pw,py+ph,'Savings / Investment','Interest Rate (r)');
+  // S (upward sloping) line
+  ctx.strokeStyle=GOLD; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(px+50,py+ph-20); ctx.lineTo(px+pw-50,py+30); ctx.stroke();
+  ctx.fillStyle=GOLD; ctx.font='bold 14px Crimson Pro, serif';
+  ctx.textAlign='left'; ctx.fillText('S (Savings)', px+pw-120, py+25);
+  // I (downward sloping) line
+  ctx.strokeStyle=BLUE; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(px+50,py+30); ctx.lineTo(px+pw-50,py+ph-20); ctx.stroke();
+  ctx.fillStyle=BLUE; ctx.fillText('I (Investment)', px+pw-160, py+ph-10);
+  // equilibrium
+  const eqX=px+pw/2, eqY=py+ph/2+10;
+  ctx.fillStyle=GREEN; ctx.beginPath(); ctx.arc(eqX,eqY,6,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=MUTED; ctx.font='11px JetBrains Mono, monospace';
+  ctx.fillText('r* (equilibrium rate)', eqX+10, eqY-6);
+}
+
+// ───────────────────────────────────────────
+// WEEK 4 GRAPHS
+// ───────────────────────────────────────────
+function drawSolow() {
+  const ctx = C('solowCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=420,H=340,px=55,py=20,pw=330,ph=280;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx,px,py,pw,ph);
+  axisLabels(ctx,px,py,px+pw,py+ph,'Capital per Worker (k)','Output / Investment / Depreciation');
+  const maxK=100;
+  function sy(k){ return 0.3*Math.sqrt(k)*250; }
+  function dep(k){ return 0.07*k*2.5; }
+  function prod(k){ return Math.sqrt(k)*250; }
+  // production function
+  ctx.strokeStyle=MUTED; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  for(let i=1;i<=pw;i+=2){
+    const k=i/pw*maxK;
+    const y=py+ph-(prod(k)/prod(maxK))*ph;
+    i===1?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle=MUTED; ctx.font='12px Crimson Pro, serif'; ctx.textAlign='left';
+  ctx.fillText('f(k)', px+pw-25, py+15);
+  // s·f(k) investment
+  ctx.strokeStyle=GOLD; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=1;i<=pw;i+=2){
+    const k=i/pw*maxK;
+    const y=py+ph-(sy(k)/prod(maxK))*ph;
+    i===1?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=GOLD; ctx.fillText('s·f(k)', px+pw*0.6, py+ph*0.25);
+  // depreciation line
+  ctx.strokeStyle=RED; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=0;i<=pw;i+=2){
+    const k=i/pw*maxK;
+    const y=py+ph-(dep(k)/prod(maxK))*ph;
+    i===0?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=RED; ctx.fillText('δk', px+pw-22, py+ph*0.55);
+  // steady state k*
+  let ssK=0;
+  for(let k=1;k<maxK;k+=0.1){ if(Math.abs(sy(k)-dep(k))<0.5){ssK=k;break;} }
+  const ssX=px+(ssK/maxK)*pw;
+  ctx.strokeStyle=GREEN; ctx.lineWidth=1.5; ctx.setLineDash([5,5]);
+  ctx.beginPath(); ctx.moveTo(ssX,py); ctx.lineTo(ssX,py+ph); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=GREEN; ctx.font='bold 12px JetBrains Mono, monospace';
+  ctx.textAlign='center'; ctx.fillText('k*', ssX, py+ph+18);
+}
+
+function drawGDPcap() {
+  const ctx = C('gdpCapCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=420,H=340;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  const data=[
+    {name:'Luxembourg',val:92,col:GOLD},
+    {name:'USA',val:63,col:BLUE},
+    {name:'Germany',val:55,col:GREEN},
+    {name:'Slovakia',val:32,col:PURPLE},
+    {name:'Ukraine',val:10,col:MUTED},
+  ];
+  const barH=36, gap=10, px=110, py=28, maxW=260;
+  data.forEach((d,i)=>{
+    const y=py+i*(barH+gap);
+    const bw=d.val/92*maxW;
+    ctx.fillStyle=d.col+'33';
+    ctx.fillRect(px,y,maxW,barH);
+    ctx.fillStyle=d.col;
+    ctx.fillRect(px,y,bw,barH);
+    ctx.fillStyle=TEXT; ctx.font='13px Crimson Pro, serif';
+    ctx.textAlign='right'; ctx.fillText(d.name, px-6, y+barH/2+5);
+    ctx.fillStyle=BG; ctx.font='bold 12px JetBrains Mono, monospace';
+    ctx.textAlign='left';
+    if(bw>35) ctx.fillText(`$${d.val}k`, px+bw-40, y+barH/2+5);
+    else { ctx.fillStyle=d.col; ctx.fillText(`$${d.val}k`, px+bw+4, y+barH/2+5); }
+  });
+  ctx.fillStyle=MUTED; ctx.font='11px JetBrains Mono, monospace';
+  ctx.textAlign='center';
+  ctx.fillText('GDP per capita, PPP — approximate (thousands USD)', W/2, H-10);
+}
+
+function drawSolowShift() {
+  const ctx = C('solowShiftCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=860,H=260,px=60,py=20,pw=770,ph=200;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx,px,py,pw,ph);
+  axisLabels(ctx,px,py,px+pw,py+ph,'Capital per Worker (k)','Investment / Depreciation');
+  const maxK=100;
+  function s1(k){ return 0.25*Math.sqrt(k)*220; }
+  function s2(k){ return 0.38*Math.sqrt(k)*220; }
+  function dep(k){ return 0.07*k*2.2; }
+  function maxV(k){ return dep(maxK)*1.05; }
+  // s1
+  ctx.strokeStyle=BLUE; ctx.lineWidth=2;
+  ctx.beginPath();
+  for(let i=1;i<=pw;i+=2){
+    const k=i/pw*maxK;
+    const y=py+ph-(s1(k)/maxV())*ph;
+    i===1?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=BLUE; ctx.font='13px Crimson Pro, serif'; ctx.textAlign='left';
+  ctx.fillText('s₁·f(k)', px+pw*0.55, py+ph*0.35);
+  // s2 (higher savings)
+  ctx.strokeStyle=GOLD; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=1;i<=pw;i+=2){
+    const k=i/pw*maxK;
+    const y=py+ph-(s2(k)/maxV())*ph;
+    i===1?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=GOLD; ctx.fillText('s₂·f(k)  ↑ savings', px+pw*0.55, py+ph*0.15);
+  // depreciation
+  ctx.strokeStyle=RED; ctx.lineWidth=2;
+  ctx.beginPath();
+  for(let i=0;i<=pw;i+=2){
+    const k=i/pw*maxK;
+    const y=py+ph-(dep(k)/maxV())*ph;
+    i===0?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke();
+  ctx.fillStyle=RED; ctx.fillText('δk', px+pw-28, py+ph-8);
+  // steady states
+  let k1=0,k2=0;
+  for(let k=1;k<maxK;k+=0.1){ if(Math.abs(s1(k)-dep(k))<0.4){k1=k;break;} }
+  for(let k=k1+5;k<maxK;k+=0.1){ if(Math.abs(s2(k)-dep(k))<0.6){k2=k;break;} }
+  [k1,k2].forEach((k,i)=>{
+    const x=px+(k/maxK)*pw;
+    ctx.strokeStyle=i===0?BLUE:GOLD; ctx.lineWidth=1.5; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.moveTo(x,py); ctx.lineTo(x,py+ph); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=i===0?BLUE:GOLD; ctx.font='bold 11px JetBrains Mono, monospace';
+    ctx.textAlign='center'; ctx.fillText(i===0?'k₁*':'k₂*', x, py+ph+18);
+  });
+  // arrow between steady states
+  if(k1&&k2){
+    const x1=px+(k1/maxK)*pw+8, x2=px+(k2/maxK)*pw-8, ay=py+ph*0.85;
+    ctx.strokeStyle=GREEN; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x1,ay); ctx.lineTo(x2,ay); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2,ay); ctx.lineTo(x2-8,ay-5); ctx.lineTo(x2-8,ay+5); ctx.closePath(); ctx.fillStyle=GREEN; ctx.fill();
+    ctx.fillStyle=GREEN; ctx.font='11px JetBrains Mono, monospace'; ctx.textAlign='center';
+    ctx.fillText('New steady state', (x1+x2)/2, ay-8);
+  }
+}
+
+// ───────────────────────────────────────────
+// WEEK 5 GRAPHS
+// ───────────────────────────────────────────
+function drawBusinessCycle() {
+  const ctx = C('cycleCanvas'); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=860,H=220,px=60,py=20,pw=770,ph=160;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx,px,py,pw,ph);
+  const midY=py+ph/2;
+  // potential GDP trend (slight upward)
+  ctx.strokeStyle=MUTED; ctx.lineWidth=1.5; ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(px,midY+10); ctx.lineTo(px+pw,midY-30); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=MUTED; ctx.font='11px Crimson Pro, serif';
+  ctx.textAlign='left'; ctx.fillText('Potential GDP (trend)', px+pw-160, midY-34);
+  // actual GDP wave
+  ctx.strokeStyle=GOLD; ctx.lineWidth=2.5;
+  ctx.beginPath();
+  for(let i=0;i<=pw;i+=2){
+    const t=i/pw;
+    const trend=midY+10-(40*t);
+    const wave=Math.sin(t*Math.PI*3.5)*50*(1+t*0.2);
+    const y=trend+wave;
+    i===0?ctx.moveTo(px+i,y):ctx.lineTo(px+i,y);
+  }
+  ctx.stroke();
+  // phase labels
+  const phases=[
+    {x:0.07,y:-58,label:'Trough',col:RED},
+    {x:0.22,y:-58,label:'Expansion',col:GREEN},
+    {x:0.36,y:-58,label:'Peak',col:GOLD},
+    {x:0.5,y:-58,label:'Contraction',col:RED},
+    {x:0.65,y:-58,label:'Trough',col:RED},
+    {x:0.82,y:-58,label:'Expansion',col:GREEN},
+  ];
+  phases.forEach(p=>{
+    ctx.fillStyle=p.col; ctx.font='bold 11px JetBrains Mono, monospace';
+    ctx.textAlign='center';
+    const bx=px+p.x*pw;
+    const t=p.x;
+    const trend=midY+10-(40*t);
+    const wave=Math.sin(t*Math.PI*3.5)*50*(1+t*0.2);
+    const py2=trend+wave;
+    ctx.beginPath(); ctx.arc(bx,py2,4,0,Math.PI*2); ctx.fillStyle=p.col+'88'; ctx.fill();
+    ctx.fillStyle=p.col; ctx.fillText(p.label, bx, py2+p.y*0.3+18);
+  });
+  ctx.fillStyle=GOLD; ctx.font='13px Crimson Pro, serif'; ctx.textAlign='left';
+  ctx.fillText('Actual GDP', px+8, py+20);
+  axisLabels(ctx,px,py,px+pw,py+ph,'Time','Real GDP');
+}
+
+function drawADASShock(canvasId, shiftLeft, shiftAD) {
+  const ctx = C(canvasId); if(!ctx) return;
+  clearCanvas(ctx);
+  const W=420,H=320,px=55,py=20,pw=330,ph=260;
+  ctx.fillStyle=BG; ctx.fillRect(0,0,W,H);
+  drawAxes(ctx,px,py,pw,ph);
+  axisLabels(ctx,px,py,px+pw,py+ph,'Real GDP','Price Level');
+
+  // Original AD
+  ctx.strokeStyle=BLUE+'88'; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(px+30,py+20); ctx.lineTo(px+pw-30,py+ph-20); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=BLUE+'88'; ctx.font='12px Crimson Pro, serif'; ctx.textAlign='left';
+  ctx.fillText('AD', px+pw-28, py+ph-18);
+  // Shifted AD
+  const adShift = shiftAD ? -50 : 0;
+  ctx.strokeStyle=BLUE; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(px+30+adShift,py+20); ctx.lineTo(px+pw-30+adShift,py+ph-20); ctx.stroke();
+  ctx.fillStyle=BLUE; ctx.fillText(shiftAD?'AD\'':'AD', px+pw-28+adShift, py+ph-18);
+  if(shiftAD){
+    ctx.strokeStyle=BLUE; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(px+pw/2,py+ph*0.3); ctx.lineTo(px+pw/2+adShift,py+ph*0.3); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px+pw/2+adShift,py+ph*0.3); ctx.lineTo(px+pw/2+adShift+8,py+ph*0.3-5); ctx.lineTo(px+pw/2+adShift+8,py+ph*0.3+5); ctx.closePath(); ctx.fillStyle=BLUE; ctx.fill();
+  }
+
+  // SRAS (original)
+  ctx.strokeStyle=GOLD+'88'; ctx.lineWidth=1.5; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(px+30,py+ph-20); ctx.lineTo(px+pw-30,py+20); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=GOLD+'88'; ctx.fillText('SRAS', px+pw-28, py+18);
+  // Shifted SRAS
+  const srasShift = !shiftAD ? -50 : 0;
+  if(srasShift !== 0) {
+    ctx.strokeStyle=GOLD; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(px+30+srasShift,py+ph-20); ctx.lineTo(px+pw-30+srasShift,py+20); ctx.stroke();
+    ctx.fillStyle=GOLD; ctx.fillText('SRAS\'', px+pw-28+srasShift, py+18);
+    ctx.strokeStyle=GOLD; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(px+pw*0.6,py+ph*0.3); ctx.lineTo(px+pw*0.6+srasShift,py+ph*0.3); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(px+pw*0.6+srasShift,py+ph*0.3); ctx.lineTo(px+pw*0.6+srasShift+8,py+ph*0.3-5); ctx.lineTo(px+pw*0.6+srasShift+8,py+ph*0.3+5); ctx.closePath(); ctx.fillStyle=GOLD; ctx.fill();
+  }
+  // LRAS
+  const lrasX=px+pw*0.5+15;
+  ctx.strokeStyle=GREEN; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+  ctx.beginPath(); ctx.moveTo(lrasX,py+5); ctx.lineTo(lrasX,py+ph); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=GREEN; ctx.fillText('LRAS', lrasX+4, py+16);
+
+  // Label
+  ctx.fillStyle=shiftAD?RED:PURPLE; ctx.font='bold 12px JetBrains Mono, monospace';
+  ctx.textAlign='center';
+  ctx.fillText(shiftAD?'← Negative Demand Shock':'← Negative Supply Shock', px+pw/2, py+ph+22);
+}
+
+// ───────────────────────────────────────────
+// DRAW DISPATCHER
+// ───────────────────────────────────────────
+const drawn = {};
+function drawGraphs(week) {
+  if(drawn[week]) return;
+  drawn[week] = true;
+  if(week===2){ drawADAS(); drawGDPPie(); drawNomReal(); }
+  if(week===3){ drawConsFunc(); drawSavFunc(); drawSIeq(); }
+  if(week===4){ drawSolow(); drawGDPcap(); drawSolowShift(); }
+  if(week===5){ drawBusinessCycle(); drawADASShock('demandShockCanvas',false,true); drawADASShock('supplyShockCanvas',true,false); }
+}
+
+// ───────────────────────────────────────────
+// INIT
+// ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  ['w1','w2','w3','w4','w5'].forEach(w => buildQuiz(w));
+});
+</script>
+</body>
+</html>
