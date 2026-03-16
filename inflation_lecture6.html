@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 6 — Inflation & Its Measurement</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --red-dark: #8f0a1e;
+    --red-light: #f5dde2;
+    --black: #0d0d0d;
+    --off-white: #f7f4ef;
+    --warm-gray: #e8e4de;
+    --mid-gray: #9a9590;
+    --text: #1a1a1a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--black);
+    color: white;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '€';
+    font-family: 'Playfair Display', serif;
+    font-size: 420px;
+    font-weight: 900;
+    position: absolute;
+    right: -40px;
+    top: -60px;
+    color: rgba(200,16,46,0.12);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    max-width: 640px;
+    margin-bottom: 24px;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero-meta {
+    font-size: 13px;
+    color: var(--mid-gray);
+    font-weight: 300;
+  }
+  .hero-meta strong { color: white; font-weight: 500; }
+
+  /* ── NAV BAR ── */
+  .toc {
+    background: var(--red);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 14px 18px;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .toc a:hover { color: white; border-bottom-color: white; }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  section {
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--warm-gray);
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  section:nth-child(1) { animation-delay: 0.1s; }
+  section:nth-child(2) { animation-delay: 0.2s; }
+  section:nth-child(3) { animation-delay: 0.3s; }
+  section:nth-child(4) { animation-delay: 0.4s; }
+  section:nth-child(5) { animation-delay: 0.5s; }
+  section:nth-child(6) { animation-delay: 0.6s; }
+  section:nth-child(7) { animation-delay: 0.7s; }
+  section:nth-child(8) { animation-delay: 0.8s; }
+  section:nth-child(9) { animation-delay: 0.9s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 28px;
+    line-height: 1.2;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 28px 0 10px;
+  }
+
+  p { margin-bottom: 16px; color: #2a2a2a; }
+
+  /* ── BIG DEFINITION ── */
+  .definition-box {
+    background: var(--black);
+    color: white;
+    border-left: 5px solid var(--red);
+    padding: 28px 32px;
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+    position: relative;
+  }
+  .definition-box .def-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .definition-box p {
+    color: white;
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  /* ── FORMULA ── */
+  .formula {
+    background: white;
+    border: 2px solid var(--warm-gray);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .formula-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 14px;
+  }
+  .formula-math {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--black);
+    background: var(--off-white);
+    padding: 12px 24px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .formula-math sup { font-size: 0.75em; }
+
+  /* ── CARDS GRID ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .card {
+    background: white;
+    border-radius: 10px;
+    padding: 22px 20px;
+    border-top: 4px solid var(--warm-gray);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .card.red { border-top-color: var(--red); }
+  .card.dark { border-top-color: var(--black); }
+  .card-icon { font-size: 1.6rem; margin-bottom: 10px; }
+  .card h4 {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+  .card p { font-size: 0.88rem; color: #555; margin: 0; line-height: 1.5; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  thead {
+    background: var(--black);
+    color: white;
+  }
+  thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  tbody tr { border-bottom: 1px solid var(--warm-gray); }
+  tbody tr:hover { background: var(--red-light); }
+  td { padding: 12px 16px; }
+  td:first-child { font-weight: 600; }
+
+  /* ── EXAMPLE STRIP ── */
+  .example {
+    background: var(--red-light);
+    border-left: 4px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 0.9rem;
+  }
+  .example strong { color: var(--red-dark); }
+
+  /* ── PILL LIST ── */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .pill {
+    background: white;
+    border: 1.5px solid var(--warm-gray);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.15s;
+  }
+  .pill:hover { background: var(--red); color: white; border-color: var(--red); }
+  .pill.red { background: var(--red); color: white; border-color: var(--red); }
+
+  /* ── REDIST TABLE ── */
+  .redist {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+    margin: 20px 0;
+  }
+  .redist-from, .redist-to {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 0.9rem;
+  }
+  .redist-from { border-left: 4px solid var(--mid-gray); }
+  .redist-to { border-left: 4px solid var(--red); }
+  .redist-from li, .redist-to li { list-style: none; padding: 3px 0; }
+  .redist-arrow {
+    font-size: 1.8rem;
+    color: var(--red);
+    text-align: center;
+  }
+  .redist-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--black);
+    color: white;
+    padding: 32px;
+    border-radius: 10px;
+    margin: 28px 0;
+    text-align: center;
+  }
+  .callout .big {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .callout .big span { color: var(--red); }
+
+  /* ── STEPS ── */
+  .steps { margin: 20px 0; counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .step-num {
+    background: var(--red);
+    color: white;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .step-text { font-size: 0.95rem; }
+
+  /* ── OUTCOMES ── */
+  .outcomes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .outcome {
+    background: white;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .outcome-check { color: var(--red); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── HOMEWORK ── */
+  .homework {
+    background: var(--black);
+    color: white;
+    padding: 36px 40px;
+    border-radius: 10px;
+    margin: 40px 0;
+  }
+  .homework h3 { color: white; font-family: 'Playfair Display', serif; margin-top: 0; }
+  .homework p { color: rgba(255,255,255,0.75); margin: 0; }
+  .homework .hw-nums {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.3rem;
+    color: var(--red);
+    font-weight: 500;
+    margin: 10px 0 6px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 40px;
+    font-size: 0.8rem;
+    margin-top: 0;
+  }
+  footer strong { color: white; }
+
+  /* ── TYPE BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+  }
+  .badge-red { background: var(--red); color: white; }
+  .badge-dark { background: var(--black); color: white; }
+  .badge-gray { background: var(--warm-gray); color: var(--text); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 50px 20px 40px; }
+    .wrapper { padding: 0 18px; }
+    .toc a { padding: 12px 12px; font-size: 10px; }
+    .redist { grid-template-columns: 1fr; }
+    .redist-arrow { transform: rotate(90deg); }
+    .hero::before { font-size: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Principles of Economics · Lecture 6</div>
+  <h1>Inflation &<br><span>Its Measurement</span></h1>
+  <div class="hero-meta">
+    <strong>Prof. Ing. Anetta Čaplánová, PhD &amp; Ing. Mgr. Hussein Mkiyes, PhD</strong><br>
+    Faculty of Economics and Finance · University of Economics in Bratislava · 16.03.2026
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="toc">
+  <a href="#outcomes">Outcomes</a>
+  <a href="#what">What is It?</a>
+  <a href="#measuring">Measuring</a>
+  <a href="#types">Types</a>
+  <a href="#causes">Causes</a>
+  <a href="#expectations">Expectations</a>
+  <a href="#costs">Costs</a>
+  <a href="#policy">Policy</a>
+  <a href="#summary">Summary</a>
+</nav>
+
+<div class="wrapper">
+
+  <!-- LEARNING OUTCOMES -->
+  <section id="outcomes">
+    <div class="section-number">00 · Learning Outcomes</div>
+    <h2>What You'll Learn</h2>
+    <div class="outcomes">
+      <div class="outcome"><span class="outcome-check">✦</span> Define inflation and calculate the inflation rate</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Explain CPI, PPI, and GDP Deflator</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Distinguish types of inflation by magnitude</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Explain demand-pull and cost-push inflation</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Understand inflation expectations</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Identify the economic costs of inflation</div>
+    </div>
+  </section>
+
+  <!-- WHAT IS INFLATION -->
+  <section id="what">
+    <div class="section-number">01 · Definition</div>
+    <h2>What Is Inflation?</h2>
+
+    <div class="definition-box">
+      <div class="def-label">Core Definition</div>
+      <p>Inflation is a <strong>sustained increase in the general price level</strong> over time — meaning money gradually loses its real purchasing power.</p>
+    </div>
+
+    <p>Think of it simply: if a basket of groceries costs <strong>€100 today</strong> and <strong>€105 next year</strong>, prices have risen by 5% — that's 5% inflation.</p>
+
+    <div class="example">
+      <strong>Opposite phenomenon:</strong> <strong>Deflation</strong> = a persistent <em>decrease</em> in the price level. While it sounds good, it can be equally damaging — consumers delay spending, businesses cut production, unemployment rises.
+    </div>
+
+    <h3>Nominal vs Real Values</h3>
+    <p>This distinction is fundamental. A <strong>nominal value</strong> is measured in current prices. A <strong>real value</strong> is adjusted for inflation — it reflects true purchasing power.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Year</th><th>Nominal Wage</th><th>Inflation</th><th>Real Wage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2024</td><td>€1,000</td><td>—</td><td>€1,000</td></tr>
+          <tr><td>2025</td><td>€1,050</td><td>5%</td><td>€1,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Even though the nominal wage went up by €50, the real wage <strong>did not increase</strong> — inflation cancelled the raise out.</p>
+
+    <h3>Why Does It Matter?</h3>
+    <div class="pill-list">
+      <span class="pill">Purchasing power</span>
+      <span class="pill">Savings &amp; investments</span>
+      <span class="pill">Wages &amp; salaries</span>
+      <span class="pill">Interest rates</span>
+      <span class="pill">Economic stability</span>
+    </div>
+    <p>High inflation creates <strong>uncertainty and economic distortions</strong> — businesses can't plan, savers are penalised, and inequality can worsen.</p>
+  </section>
+
+  <!-- MEASURING -->
+  <section id="measuring">
+    <div class="section-number">02 · Measurement</div>
+    <h2>Measuring the Price Level</h2>
+    <p>Price indices track the price level over time. The three main ones each capture inflation from a different angle.</p>
+
+    <div class="cards">
+      <div class="card red">
+        <div class="card-icon">🛒</div>
+        <h4>CPI — Consumer Price Index</h4>
+        <p>Tracks prices of a fixed basket of everyday goods &amp; services bought by households. The most common cost-of-living measure.</p>
+      </div>
+      <div class="card dark">
+        <div class="card-icon">🏭</div>
+        <h4>PPI — Producer Price Index</h4>
+        <p>Measures prices received by producers (wholesale level). Often an early warning signal — factory costs rise before shop prices do.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h4>GDP Deflator</h4>
+        <p>Covers all goods &amp; services produced in the economy. The broadest measure — the basket updates each year.</p>
+      </div>
+    </div>
+
+    <!-- CPI -->
+    <h3>How Is CPI Calculated?</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Select a representative basket</strong> — food, housing, transport, healthcare, education, etc.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Collect price data</strong> for all items in the basket.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Calculate the total cost</strong> of the basket today.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Compare it to the base year</strong> cost using the formula below.</div></div>
+    </div>
+
+    <div class="formula">
+      <div class="formula-title">CPI Formula</div>
+      <div class="formula-math">CPI = (Cost of basket today / Cost of basket in base year) × 100</div>
+    </div>
+
+    <!-- Inflation Rate -->
+    <h3>Inflation Rate Formula</h3>
+    <p>Once you have CPI values for two periods, inflation rate is:</p>
+    <div class="formula">
+      <div class="formula-title">Inflation Rate</div>
+      <div class="formula-math">Inflation Rate = ((P<sub>t</sub> − P<sub>t−1</sub>) / P<sub>t−1</sub>) × 100</div>
+    </div>
+    <p>Where <em>P<sub>t</sub></em> = current price level and <em>P<sub>t−1</sub></em> = previous period price level.</p>
+
+    <!-- HICP -->
+    <h3>HICP — Harmonised Index of Consumer Prices</h3>
+    <div class="definition-box">
+      <div class="def-label">European Union Standard</div>
+      <p>The HICP is used across the EU to <strong>compare inflation between countries</strong>. It's the official measure used by the <strong>European Central Bank</strong> for monetary policy decisions.</p>
+    </div>
+
+    <!-- GDP Deflator -->
+    <h3>GDP Deflator Formula</h3>
+    <div class="formula">
+      <div class="formula-title">GDP Deflator</div>
+      <div class="formula-math">GDP Deflator = (Nominal GDP / Real GDP) × 100</div>
+    </div>
+
+    <!-- Compare -->
+    <h3>Comparison of Measures</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Index</th><th>What It Measures</th><th>Scope</th><th>Includes Imports?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CPI</td><td>Consumer prices</td><td>Household consumption</td><td>✅ Yes</td></tr>
+          <tr><td>PPI</td><td>Producer prices</td><td>Production sector</td><td>—</td></tr>
+          <tr><td>GDP Deflator</td><td>All goods &amp; services produced</td><td>Entire economy</td><td>❌ No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Headline vs Core -->
+    <h3>Headline vs Core Inflation</h3>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">📰</div>
+        <h4>Headline Inflation</h4>
+        <p>Includes <em>all</em> prices in the basket — including food and energy, which can be very volatile.</p>
+      </div>
+      <div class="card red">
+        <div class="card-icon">🎯</div>
+        <h4>Core Inflation</h4>
+        <p>Excludes food and energy. Better for analysing <strong>long-term inflation trends</strong> without short-term noise.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPES -->
+  <section id="types">
+    <div class="section-number">03 · Types</div>
+    <h2>Classification by Magnitude</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🟢</div>
+        <h4>Moderate Inflation</h4>
+        <p>Below <strong>10% annually</strong>. Generally manageable. Most central banks target around 2%.</p>
+      </div>
+      <div class="card dark">
+        <div class="card-icon">🟠</div>
+        <h4>Galloping Inflation</h4>
+        <p><strong>Two- or three-digit</strong> annual rates. Severely erodes savings and purchasing power.</p>
+      </div>
+      <div class="card red">
+        <div class="card-icon">🔴</div>
+        <h4>Hyperinflation</h4>
+        <p>Above <strong>100%</strong> — extreme and destabilising. Money loses value so fast it becomes nearly worthless.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <strong>Historical examples of hyperinflation:</strong> Germany 1923 (Weimar Republic), Zimbabwe 2008, Syria 2013. In these cases, prices could double within days.
+    </div>
+  </section>
+
+  <!-- CAUSES -->
+  <section id="causes">
+    <div class="section-number">04 · Causes</div>
+    <h2>Main Causes of Inflation</h2>
+    <p>Inflation has two main sources, both explained through the <strong>AD–AS (Aggregate Demand–Aggregate Supply)</strong> model.</p>
+
+    <!-- Demand Pull -->
+    <h3><span class="badge badge-red">Demand-Pull</span> Too Much Money Chasing Too Few Goods</h3>
+    <div class="definition-box">
+      <div class="def-label">What happens</div>
+      <p>Aggregate demand increases <strong>faster than the economy's productive capacity</strong>, pulling prices upward.</p>
+    </div>
+    <p><strong>Common causes:</strong></p>
+    <div class="pill-list">
+      <span class="pill">Tax cuts</span>
+      <span class="pill">Increased government spending</span>
+      <span class="pill">Monetary expansion</span>
+      <span class="pill">Higher exports</span>
+      <span class="pill">Rising investment</span>
+    </div>
+    <p><strong>AD–AS mechanism:</strong> AD shifts right → price level rises, real GDP rises temporarily → inflationary gap appears → wages increase → short-run AS shifts left back to equilibrium at a higher price level.</p>
+
+    <!-- Cost Push -->
+    <h3><span class="badge badge-dark">Cost-Push</span> Rising Production Costs</h3>
+    <div class="definition-box">
+      <div class="def-label">What happens</div>
+      <p>Production costs rise, so firms supply less at every price level — AS shifts left, prices rise and output falls.</p>
+    </div>
+    <p><strong>Common causes:</strong></p>
+    <div class="pill-list">
+      <span class="pill">Higher oil prices</span>
+      <span class="pill">Wage increases</span>
+      <span class="pill">Supply chain disruptions</span>
+      <span class="pill">Raw material costs</span>
+    </div>
+
+    <div class="example">
+      <strong>Example:</strong> Rising steel prices → higher car production costs → car prices increase for consumers. The classic supply-side shock.
+    </div>
+
+    <!-- Stagflation -->
+    <h3><span class="badge badge-gray">Stagflation</span> The Worst of Both Worlds</h3>
+    <p>Cost-push inflation can cause <strong>stagflation</strong> — a rare and painful combination of:</p>
+    <div class="pill-list">
+      <span class="pill red">Rising prices</span>
+      <span class="pill red">Falling GDP</span>
+      <span class="pill red">Rising unemployment</span>
+    </div>
+    <div class="example">
+      <strong>Historical example:</strong> The 1970s oil crisis triggered stagflation across Western economies — a nightmare for policymakers because the usual tools (raise rates to fight inflation vs. cut rates to boost growth) directly contradict each other.
+    </div>
+
+    <!-- Long Run -->
+    <div class="callout">
+      <div class="big">In the long run, inflation occurs when<br><span>money supply grows faster than real GDP.</span></div>
+      <p style="color:rgba(255,255,255,0.6); font-size:0.85rem; margin-top:12px;">Money growth &gt; Output growth → Persistent inflation</p>
+    </div>
+  </section>
+
+  <!-- EXPECTATIONS -->
+  <section id="expectations">
+    <div class="section-number">05 · Expectations</div>
+    <h2>Inflation Expectations</h2>
+    <p>What people <em>expect</em> inflation to be has a powerful effect on what inflation actually becomes.</p>
+
+    <h3>How Expectations Influence the Economy</h3>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">💼</div>
+        <h4>Wage Negotiations</h4>
+        <p>Workers demand higher wages if they expect prices to rise — locking in future inflation before it even happens.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <h4>Contracts</h4>
+        <p>Long-term contracts (rent, supply deals) are priced with expected inflation built in.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <h4>Interest Rates</h4>
+        <p>Lenders charge higher rates to protect against expected erosion of purchasing power.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏷️</div>
+        <h4>Pricing Decisions</h4>
+        <p>Firms raise prices preemptively if they expect costs to increase — a self-fulfilling prophecy.</p>
+      </div>
+    </div>
+
+    <h3>Rational Expectations</h3>
+    <div class="definition-box">
+      <div class="def-label">Theory</div>
+      <p>A rational expectation uses <strong>all available information</strong> to forecast future inflation as accurately as possible.</p>
+    </div>
+    <p>Chain reaction: Workers expect inflation → demand higher wages → firms face higher costs → firms raise prices → inflation occurs. This is called <strong>inflation persistence</strong> or <em>inertial inflation</em>.</p>
+
+    <p>Inflation also persists because of <strong>wage contracts</strong> (locked in for months/years), <strong>adaptive expectations</strong> (people assume tomorrow ≈ yesterday), and <strong>price-setting behaviour</strong> in firms.</p>
+  </section>
+
+  <!-- COSTS -->
+  <section id="costs">
+    <div class="section-number">06 · Economic Costs</div>
+    <h2>The Real Costs of Inflation</h2>
+    <p>Inflation isn't just annoying — it creates genuine economic harm.</p>
+
+    <div class="cards">
+      <div class="card red">
+        <div class="card-icon">👟</div>
+        <h4>Shoe-Leather Costs</h4>
+        <p>People make more frequent trips to the bank to avoid holding cash that loses value. Time and effort wasted managing money.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📄</div>
+        <h4>Menu Costs</h4>
+        <p>Businesses must constantly update prices — new price tags, reprinted menus, updated systems. Small but real costs.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">❓</div>
+        <h4>Uncertainty</h4>
+        <p>High or unpredictable inflation makes planning difficult for households and businesses. Investment suffers.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📡</div>
+        <h4>Distorted Price Signals</h4>
+        <p>Prices convey information in a market economy. Inflation blurs those signals — it becomes hard to tell if a price rise is real or just inflation.</p>
+      </div>
+    </div>
+
+    <h3>Redistribution Effects</h3>
+    <p>Inflation doesn't hurt everyone equally. It effectively transfers wealth:</p>
+
+    <div class="redist">
+      <div class="redist-from">
+        <div class="redist-label">Losers (From)</div>
+        <li>Creditors (lenders)</li>
+        <li>Savers</li>
+        <li>Fixed-income earners</li>
+      </div>
+      <div class="redist-arrow">→</div>
+      <div class="redist-to">
+        <div class="redist-label">Winners (To)</div>
+        <li>Debtors (borrowers)</li>
+        <li>Borrowers</li>
+        <li>Flexible-income earners</li>
+      </div>
+    </div>
+    <p>A borrower repays a loan with money worth <em>less</em> than when they borrowed it — inflation benefits them at the lender's expense.</p>
+  </section>
+
+  <!-- POLICY -->
+  <section id="policy">
+    <div class="section-number">07 · Policy</div>
+    <h2>Policy Responses to Inflation</h2>
+    <p>Central banks are the main institution responsible for controlling inflation through <strong>monetary policy</strong>.</p>
+
+    <div class="cards">
+      <div class="card red">
+        <div class="card-icon">📈</div>
+        <h4>Interest Rates</h4>
+        <p>Raising interest rates makes borrowing more expensive → less spending → less demand → lower inflation.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <h4>Money Supply Control</h4>
+        <p>Restricting how much money circulates in the economy directly counters the long-run driver of inflation.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h4>Inflation Targeting</h4>
+        <p>Central banks publicly announce a target rate — typically <strong>~2% annually</strong> — to anchor expectations and build credibility.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <strong>ECB goal:</strong> The European Central Bank targets inflation close to, but below, 2% over the medium term — low enough to avoid distortions, high enough to avoid deflation risk.
+    </div>
+  </section>
+
+  <!-- SUMMARY -->
+  <section id="summary">
+    <div class="section-number">08 · Summary</div>
+    <h2>Key Takeaways</h2>
+
+    <div class="outcomes">
+      <div class="outcome"><span class="outcome-check">✦</span> Inflation is a sustained rise in the general price level that erodes the purchasing power of money.</div>
+      <div class="outcome"><span class="outcome-check">✦</span> It is measured using CPI, PPI, and the GDP Deflator — each from a different economic angle.</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Demand-pull inflation comes from excess demand; cost-push from rising production costs.</div>
+      <div class="outcome"><span class="outcome-check">✦</span> In the long run, inflation is driven by money supply growing faster than real GDP.</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Expectations can make inflation self-perpetuating — anchoring them is critical.</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Inflation creates real costs: shoe-leather, menu costs, uncertainty, and redistribution.</div>
+      <div class="outcome"><span class="outcome-check">✦</span> Price stability (~2%) is the primary goal of central bank monetary policy.</div>
+    </div>
+  </section>
+
+  <!-- HOMEWORK -->
+  <div class="homework" id="homework">
+    <h3>📚 Homework</h3>
+    <p>From the Parkin textbook (Economics, 14th Edition), complete the following problems on p. 578:</p>
+    <div class="hw-nums">Problems 24, 25, 27</div>
+    <p>Also review and watch <strong>all videos</strong> on the Pearson platform — <em>Chapter 22</em>.</p>
+  </div>
+
+</div><!-- /wrapper -->
+
+<footer>
+  <strong>Principles of Economics · Lecture 6 · Inflation and Its Measurement</strong><br>
+  Based on: Parkin, M. (2024). <em>Economics</em>, 14th Edition. Pearson Education Limited.<br><br>
+  Faculty of Economics and Finance · University of Economics in Bratislava · 16.03.2026
+</footer>
+
+</body>
+</html>
